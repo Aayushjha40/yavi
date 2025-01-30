@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Hide vertical scrollbar but keep vertical scrolling */
+.hide-scrollbar {
+    overflow-y: scroll; /* Allow vertical scrolling */
+    overflow-x: hidden; /* Hide horizontal scrollbar (optional) */
+  }
+  
+  /* Hide scrollbar for Chrome, Safari, and Opera */
+  .hide-scrollbar::-webkit-scrollbar {
+    width: 0; /* Width of vertical scrollbar */
+    background: transparent; /* Optional: Background for the scrollbar */
+  }
+  
+  /* Hide scrollbar for Firefox */
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  /* Hide scrollbar for IE and Edge */
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+  }
