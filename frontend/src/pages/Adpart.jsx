@@ -51,7 +51,7 @@ const Adpart = () => {
 
   return (
     <div
-      className="relative w-[98vw] h-[35vh] overflow-hidden rounded-3xl m-5"
+      className="relative w-[98vw] h-[50vh] overflow-hidden rounded-3xl m-auto mt-3"
       onTouchStart={handleSwipeStart}
       onTouchEnd={handleSwipeEnd}
     >
@@ -62,7 +62,7 @@ const Adpart = () => {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className="min-w-full h-screen bg-cover bg-center"
+            className="min-w-full h-[50vh] bg-cover bg-center"
             style={{ backgroundImage: `url(${slide})` }}
           ></div>
         ))}
