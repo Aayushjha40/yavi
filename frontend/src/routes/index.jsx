@@ -1,21 +1,31 @@
 import {createBrowserRouter} from 'react-router-dom'
 import App from '../App'
 import Home from '../pages/Home'
-import Login from '../pages/Login'
+import LoginForUser from '../pages/Login/LoginForUser'
+import LoginForAgency from '../pages/Login/LoginForAgency'
+import LoginForAdmin from '../pages/Login/LoginForAdmin'
+import Bus from '../pages/SubNavbar/Bus'
+import Hotel from '../pages/SubNavbar/Hotel'
+import Flight from '../pages/SubNavbar/Flight'
+import Train from '../pages/SubNavbar/Train'
+import EcoFriendlyZone from '../pages/SubNavbar/EcoFriendlyZone'
 
 const router = createBrowserRouter([
     {
         path : "/",
         element : <App/>,
         children : [
-            {
-                path : "",
-                element : <Home/>
-            },
-            {
-                path : "/Login",
-                element : <Login/>
-            }
+            {path : "", element : <Home/>},
+            {path : "loginForUser", element : <LoginForUser/>},
+            {path : "loginForAgency", element : <LoginForAgency/>},
+            {path : "oginForAdmin", element : <LoginForAdmin/>},
+            {path : "bus", element : <Bus/>},
+            {path : "hotel", element : <Hotel/>},
+            {path : "train", element : <Train/>},
+            {path : "flight", element : <Flight/>},
+            {path : "ecoFriendlyZone", element : <EcoFriendlyZone/>},
+
+            
         ]
     }
 ])

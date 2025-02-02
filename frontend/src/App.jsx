@@ -8,12 +8,12 @@ function App() {
   
   return (
     <>
-    <div className="hide-scrollbar">
+    <div>
     <Header/>
-    <main>
+    <main className="pt-[28vh]">
     <Outlet/>
     </main>
-    <Footer/>
+    <Footer />
     </div>
     </>
   )

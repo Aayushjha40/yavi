@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import login from '../assets/login.png';
 import coin from '../assets/coin.png';
@@ -7,12 +8,21 @@ import hotalh from '../assets/hotalh.png';
 import trainh from '../assets/trainh.png';
 import bush from '../assets/bush.png';
 import ecozone from '../assets/ecozone.png';
-import { Link } from 'react-router-dom';
 
 const Header = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const closeDropdown = () => {
+    setDropdownOpen(false);
+  };
+
   return (
-    <div className="bg-white fixed top-0 left-0 w-full z-50 ">
-      <div className="h-20 flex items-center justify-between px-4 md:px-10">
+    <div className="bg-white w-full fixed top-0 z-50 rounded-b-3xl border-2 border-gray-200">
+      <div className="h-[12vh] flex items-center justify-between px-4 md:px-10">
         <Link to="/">
           <div className="logo">
             <img width={100} src={logo} alt="Company Logo" />
@@ -43,40 +53,50 @@ const Header = () => {
             </svg>
           </span>
 
-          <Link to="/login">
-            <div className="bg-[#00798C] p-2 w-12 h-12 border-2 border-black rounded-full flex items-center justify-center">
+          <div className="relative">
+            <div
+              className="bg-[#00798C] p-2 w-12 h-12 border-2 border-black rounded-full flex items-center justify-center cursor-pointer"
+              onClick={toggleDropdown}
+            >
               <img src={login} alt="Login Icon" width={30} />
             </div>
-          </Link>
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-[#38cfe7] border border-gray-200 rounded-lg shadow-lg">
+                <Link to="LoginForUser" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>User Login</Link>
+                <Link to="LoginForAgency" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Agency Login</Link>
+                <Link to="LoginForAdmin" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Admin Login</Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       <div className="flex justify-center rounded-lg">
         <div className="flex justify-around space-x-6 bg-slate-50 w-full md:w-[60vw] lg:w-[40vw]">
-          <div className="flex flex-col items-center hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 py-2.5 px-6 rounded">
+          <Link to="/flight" className="flex flex-col items-center hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 py-2.5 px-6 rounded">
             <img src={flighth} alt="Flight" className="w-12 h-12" />
             <p className="font-semibold text-xl">Flight</p>
-          </div>
+          </Link>
 
-          <div className="flex flex-col items-center py-2.5 px-6 hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 rounded">
+          <Link to="/hotel" className="flex flex-col items-center py-2.5 px-6 hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 rounded">
             <img src={hotalh} alt="Hotel" className="w-12 h-12" />
             <p className="font-semibold text-xl">Hotel</p>
-          </div>
+          </Link>
 
-          <div className="flex flex-col items-center py-2.5 px-6 hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 rounded">
+          <Link to="/train" className="flex flex-col items-center py-2.5 px-6 hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 rounded">
             <img src={trainh} alt="Train" className="w-12 h-12" />
             <p className="font-semibold text-xl">Train</p>
-          </div>
+          </Link>
 
-          <div className="flex flex-col items-center p-2.5 hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 rounded">
+          <Link to="/bus" className="flex flex-col items-center p-2.5 hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 rounded">
             <img src={bush} alt="Bus" className="w-12 h-12" />
             <p className="font-semibold text-xl">Bus</p>
-          </div>
+          </Link>
 
-          <div className="flex flex-col items-center py-2.5 px-6 hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 rounded">
+          <Link to="/ecoFriendlyZone" className="flex flex-col items-center py-2.5 px-6 hover:bg-slate-100 hover:text-blue-500 hover:underline hover:decoration-blue-500 rounded">
             <img src={ecozone} alt="Eco-Friendly Zone" className="w-12 h-12" />
             <p className="font-semibold text-sm text-center">Eco-Friendly Zone</p>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
