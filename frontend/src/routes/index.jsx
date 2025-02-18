@@ -9,6 +9,7 @@ import Hotel from '../pages/SubNavbar/Hotel'
 import Flight from '../pages/SubNavbar/Flight'
 import Train from '../pages/SubNavbar/Train'
 import EcoFriendlyZone from '../pages/SubNavbar/EcoFriendlyZone'
+import Card from '../pages/Card';
 
 const router = createBrowserRouter([
     {
@@ -18,12 +19,13 @@ const router = createBrowserRouter([
             {path : "", element : <Home/>},
             {path : "loginForUser", element : <LoginForUser/>},
             {path : "loginForAgency", element : <LoginForAgency/>},
-            {path : "oginForAdmin", element : <LoginForAdmin/>},
+            {path : "loginForAdmin", element : <LoginForAdmin/>},
             {path : "bus", element : <Bus/>},
             {path : "hotel", element : <Hotel/>},
             {path : "train", element : <Train/>},
             {path : "flight", element : <Flight/>},
             {path : "ecoFriendlyZone", element : <EcoFriendlyZone/>},
+            {path : "card", element : <Card/>},
 
             
         ]

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import login from '../assets/login.png';
@@ -11,6 +11,8 @@ import ecozone from '../assets/ecozone.png';
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -20,8 +22,24 @@ const Header = () => {
     setDropdownOpen(false);
   };
 
+  const controlNavbar = () => {
+    if (window.scrollY > lastScrollY) {
+      setShowNavbar(false);
+    } else {
+      setShowNavbar(true);
+    }
+    setLastScrollY(window.scrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', controlNavbar);
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  }, [lastScrollY]);
+
   return (
-    <div className="bg-white w-full fixed top-0 z-50 rounded-b-3xl border-2 border-gray-200">
+    <div className={`bg-white w-full fixed top-0 z-50 border-b-2 border-gray-200 transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="h-[12vh] flex items-center justify-between px-4 md:px-10">
         <Link to="/">
           <div className="logo">
