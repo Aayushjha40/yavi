@@ -9,6 +9,7 @@ import trainh from "../assets/trainh.png";
 import bush from "../assets/bush.png";
 import ecozone from "../assets/ecozone.png";
 
+
 const navItems = [
   { name: "Flight", path: "/flight", icon: flighth },
   { name: "Hotel", path: "/hotel", icon: hotalh },
