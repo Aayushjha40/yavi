@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import login from '../assets/login.png';
@@ -9,17 +9,37 @@ import trainh from '../assets/trainh.png';
 import bush from '../assets/bush.png';
 import ecozone from '../assets/ecozone.png';
 
+
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
     };
 
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const closeDropdown = () => {
     setDropdownOpen(false);
   };
+
+  const closeProfileDropdown = () => {
+    setProfileDropdownOpen(false);
+  };
+
+  const navItems = [
+    { name: 'Flight', path: '/flight', icon: flighth },
+    { name: 'Hotel', path: '/hotel', icon: hotalh },
+    { name: 'Train', path: '/train', icon: trainh },
+    { name: 'Bus', path: '/bus', icon: bush },
+    { name: 'Eco-Friendly Zone', path: '/ecoFriendlyZone', icon: ecozone },
+  ];
 
   return (
     <div className="bg-white w-full fixed top-0 z-50 rounded-b-3xl border-2 border-gray-200">
@@ -30,7 +50,7 @@ const Header = () => {
 
         {/* Centered Navigation (Appears Only After Scroll) */}
         {isScrolled && (
-          <div className="hidden md:flex space-x-16"> {/* Increased spacing to space-x-16 */}
+          <div className="hidden md:flex space-x-16">
             {navItems.map((item, index) => (
               <Link key={index} to={item.path} className="flex flex-col items-center space-y-1">
                 <img src={item.icon} alt={item.name} className="w-8 h-8" />
@@ -87,9 +107,22 @@ const Header = () => {
             </svg>
           </span>
 
+
           {/* Login Icon */}
-          <div className="bg-[#00798C] p-2 w-10 h-10 border border-gray-400 rounded-full flex items-center justify-center cursor-pointer">
-            <img src={login} alt="Login Icon" width={22} />
+          <div className="relative">
+            <div
+              className="bg-[#00798C] p-2 w-10 h-10 border border-gray-400 rounded-full flex items-center justify-center cursor-pointer"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <img src={login} alt="Login Icon" width={22} />
+            </div>
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-[#38cfe7] border border-gray-200 rounded-lg shadow-lg">
+                <Link to="LoginForUser" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>User Login</Link>
+                <Link to="LoginForAgency" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Agency Login</Link>
+                <Link to="LoginForAdmin" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Admin Login</Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -116,4 +149,3 @@ const Header = () => {
 };
 
 export default Header;
-
