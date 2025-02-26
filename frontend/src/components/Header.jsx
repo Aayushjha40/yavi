@@ -8,6 +8,7 @@ import hotalh from '../assets/hotalh.png';
 import trainh from '../assets/trainh.png';
 import bush from '../assets/bush.png';
 import ecozone from '../assets/ecozone.png';
+import userLogin from '../pages/Login/LoginForUser';
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -41,7 +42,7 @@ const Header = () => {
   return (
     <div className={`bg-white w-full fixed top-0 z-50 border-b-2 border-gray-200 transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="h-[12vh] flex items-center justify-between px-4 md:px-10">
-        <Link to="/">
+        <Link to="/home">
           <div className="logo">
             <img width={100} src={logo} alt="Company Logo" />
           </div>
@@ -80,7 +81,7 @@ const Header = () => {
             </div>
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-[#38cfe7] border border-gray-200 rounded-lg shadow-lg">
-                <Link to="LoginForUser" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>User Login</Link>
+                <Link to="/" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>User Login</Link>
                 <Link to="LoginForAgency" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Agency Login</Link>
                 <Link to="LoginForAdmin" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Admin Login</Link>
               </div>

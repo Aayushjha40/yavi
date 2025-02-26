@@ -1,25 +1,33 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
+import home from '../Home';
+import SignupForUser from './signupForUser';
+import logo from './logo.png';
+import LoginForAdmin from './LoginForAdmin';
+
 
 const YaviLogin = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="m-0 p-0 bg-cover bg-center" style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?nature,green')" }}>
-            <nav className="flex justify-between items-center px-20 py-3 bg-green-600 bg-opacity-50">
+            <nav className="flex justify-between items-center px-20 py-3  bg-opacity-50">
                 <div className="logo">
-                    <img src="https://via.placeholder.com/50" alt="Yavi Logo" className="h-8" />
+                    <img src={logo} alt="Yavi Logo" className="h-8" />
                 </div>
                 <div className="flex space-x-4">
-                    <button className="bg-white text-green-600 px-4 py-1 rounded-full">Login</button>
-                    <button className="bg-green-700 text-white px-4 py-1 rounded-full">Sign Up</button>
+                    <button className="bg-white text-green-600 px-4 py-1 rounded-full">Help</button>
+                    <button className="bg-green-700 text-white px-4 py-1 rounded-full" onClick={() => navigate("/LoginForAdmin")}>Admin</button>
                 </div>
             </nav>
             
             <div className="flex flex-wrap justify-between px-24 py-16">
-                <div className="moto bg-green-600 bg-opacity-50 text-white p-12 rounded-lg w-96">
-                    <h3 className="text-lg">Today's Quotes</h3>
+                <div className="moto  bg-opacity-50 text-white p-12 rounded-lg w-96">
+                    <h3 className="text-lg text-black">Today's Quotes</h3>
                     <br />
-                    <h1 className="text-2xl font-bold">" Earth Loves You,<br /> Love it Back."</h1>
+                    <h1 className="text-2xl font-bold text-black">" Earth Loves You,<br /> Love it Back."</h1>
                 </div>
-                <form action="/login" className="bg-green-600 bg-opacity-50 p-8 rounded-lg w-80 flex flex-col items-center">
+                <form action="home" className="bg-green-600 bg-opacity-50 p-8 rounded-lg w-80 flex flex-col items-center">
                     <h2 className="text-white text-xl opacity-90">Login</h2>
                     <label htmlFor="username" className="text-white opacity-90 mt-4">Username</label>
                     <input type="text" id="username" placeholder="Enter Username" className="mt-1 p-2 w-full rounded-full bg-white bg-opacity-70 focus:outline-none" />
@@ -31,8 +39,10 @@ const YaviLogin = () => {
                     <button className="mt-4 bg-green-700 text-white px-6 py-2 rounded-full">Login</button>
                     <hr className="w-full my-4 opacity-20" />
                     <h3 className="text-white opacity-90">Not on Yavi? Register now!</h3>
-                    <button className="mt-2 bg-white text-green-700 px-6 py-2 rounded-full">Register</button>
+                    
+                    <button className="mt-2 bg-white text-green-700 px-6 py-2 rounded-full "  onClick={() => navigate("/SignupForUser")}>Register</button>
                 </form>
+                
             </div>
         </div>
     );

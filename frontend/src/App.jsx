@@ -9,8 +9,8 @@ function App() {
   return (
     <>
     <div>
-    <Header/>
-    <main className="pt-[28vh]">
+    
+    <main >
     <Outlet/>
     </main>
     <Footer />

@@ -2,8 +2,10 @@ import {createBrowserRouter} from 'react-router-dom'
 import App from '../App'
 import Home from '../pages/Home'
 import LoginForUser from '../pages/Login/LoginForUser'
+import SignupForUser from '../pages/Login/signupForUser'
 import LoginForAgency from '../pages/Login/LoginForAgency'
 import LoginForAdmin from '../pages/Login/LoginForAdmin'
+import SignupForAdmin from '../pages/Login/SignupForAdmin'
 import Bus from '../pages/SubNavbar/Bus'
 import Hotel from '../pages/SubNavbar/Hotel'
 import Flight from '../pages/SubNavbar/Flight'
@@ -16,10 +18,12 @@ const router = createBrowserRouter([
         path : "/",
         element : <App/>,
         children : [
-            {path : "", element : <Home/>},
-            {path : "loginForUser", element : <LoginForUser/>},
+            {path : "", element : <LoginForUser/>},
+            {path : "signupForUser", element : <SignupForUser/>},
+            {path : "home", element : <Home/>},
             {path : "loginForAgency", element : <LoginForAgency/>},
             {path : "loginForAdmin", element : <LoginForAdmin/>},
+            {path : "signupForAdmin", element : <SignupForAdmin/>},
             {path : "bus", element : <Bus/>},
             {path : "hotel", element : <Hotel/>},
             {path : "train", element : <Train/>},
