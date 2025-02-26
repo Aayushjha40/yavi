@@ -1,8 +1,11 @@
 import React from 'react'
-
+import Header from '../../components/Header'
 const Flight = () => {
   return (
-    <div>Flight</div>
+    <>
+    <Header/>
+    <div>Bus</div>
+    </>
   )
 }
 

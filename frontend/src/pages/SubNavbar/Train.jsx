@@ -1,8 +1,12 @@
 import React from 'react'
+import Header from '../../components/Header'
 
 const Train = () => {
   return (
-    <div>Train</div>
+    <>
+    <Header/>
+    <div>Bus</div>
+    </>
   )
 }
 
