@@ -11,7 +11,7 @@ function SignupForUser() {
                         <img src={logo} alt="Yavi Logo" className="h-8" />
                     </div>
                     <div className="flex space-x-4">
-                        <button className="bg-white text-green-600 px-4 py-1 rounded-full">Help</button>
+                        <button className="bg-white text-green-600 px-4 py-1 rounded-full border border-green-700">Help</button>
                         {/* <button className="bg-green-700 text-white px-4 py-1 rounded-full">User</button> */}
                     </div>
                 </nav>

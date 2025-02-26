@@ -11,16 +11,16 @@ function SignupForUser() {
                         <img src={logo} alt="Yavi Logo" className="h-8" />
                     </div>
                     <div className="flex space-x-4">
-                        <button className="bg-white text-green-600 px-4 py-1 rounded-full">Help</button>
+                        <button className="bg-white text-green-600 px-4 py-1 rounded-full border border-green-700">Help</button>
                         {/* <button className="bg-green-700 text-white px-4 py-1 rounded-full">User</button> */}
                     </div>
                 </nav>
                 
                 <div className="flex flex-wrap justify-between px-24 py-16">
-                    <div className="moto  bg-opacity-50 text-white p-12 rounded-lg w-96">
+                    <div className="moto  bg-opacity-50 text-white p-12 rounded-lg w-150">
                         <h3 className="text-lg text-black">Today's Quotes</h3>
                         <br />
-                        <h1 className="text-2xl font-bold text-black">" Earth Loves You,<br /> Love it Back."</h1>
+                        <h1 className="text-2xl font-bold text-black text-5xl">" Earth Loves You,<br /> Love it Back."</h1>
                     </div>
                     <form method='get' action="register" className="bg-green-600 bg-opacity-50 p-8 rounded-lg w-80 flex flex-col items-center">
                         <h2 className="text-white text-xl opacity-90">SignUp</h2>
