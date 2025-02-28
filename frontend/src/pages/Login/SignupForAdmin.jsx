@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
-import logo from './logo.png';
+import logo from '../../assets/logo.png';
 
-function SignupForUser() {
+function SignupForAdmin() {
    const navigate = useNavigate();
   return (
      <div className="m-0 p-0 bg-cover bg-center" style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?nature,green')" }}>
@@ -48,4 +48,4 @@ function SignupForUser() {
   )
 }
 
-export default SignupForUser
+export default SignupForAdmin

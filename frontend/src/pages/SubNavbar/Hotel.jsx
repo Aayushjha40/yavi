@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { Calendar, Users, Bed, Search, Star, Coffee, Wifi, Car } from 'lucide-react';
 
@@ -25,19 +24,6 @@ const Hotel = () => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [guests, setGuests] = useState(2);
-=======
-import React from 'react'
-import Header from '../../components/Header'
-
-const Hotel = () => {
-  return (
-    <>
-    <Header/>
-    <div>Bus</div>
-    </>
-  )
-}
->>>>>>> origin/yogesh
 
   return (
     <div className="min-h-screen bg-gray-50">

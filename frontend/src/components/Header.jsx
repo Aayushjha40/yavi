@@ -8,10 +8,6 @@ import hotalh from '../assets/hotalh.png';
 import trainh from '../assets/trainh.png';
 import bush from '../assets/bush.png';
 import ecozone from '../assets/ecozone.png';
-import userLogin from '../pages/Login/LoginForUser';
-import LoginForAdmin from '../pages/Login/LoginForAdmin';
-
-
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -32,10 +28,6 @@ const Header = () => {
     setDropdownOpen(false);
   };
 
-  const closeProfileDropdown = () => {
-    setProfileDropdownOpen(false);
-  };
-
   const navItems = [
     { name: 'Flight', path: '/flight', icon: flighth },
     { name: 'Hotel', path: '/hotel', icon: hotalh },
@@ -47,15 +39,8 @@ const Header = () => {
   return (
     <div className="bg-white w-full fixed top-0 z-50 rounded-b-3xl border-2 border-gray-200">
       <div className="h-[12vh] flex items-center justify-between px-4 md:px-10">
-<<<<<<< HEAD
         <Link to="/">
           <img src={logo} alt="Company Logo" className="w-20" />
-=======
-        <Link to="/home">
-          <div className="logo">
-            <img width={100} src={logo} alt="Company Logo" />
-          </div>
->>>>>>> origin/yogesh
         </Link>
 
         {/* Centered Navigation (Appears Only After Scroll) */}
@@ -116,7 +101,6 @@ const Header = () => {
               />
             </svg>
           </span>
-
 
           {/* Login Icon */}
           <div className="relative">

@@ -1,5 +1,5 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
+import Header from '../../components/Header';
 
 const TrainBooking = () => {
   const [searchParams, setSearchParams] = useState({ source: "", destination: "", date: "" });
@@ -41,23 +41,11 @@ const TrainBooking = () => {
     }
     alert(`Booking confirmed for ${passengerDetails.length} passenger(s) on ${selectedTrain.name}. Total Cost: ₹${selectedSeats.length * seatPrice}`);
   };
-=======
-import React from 'react'
-import Header from '../../components/Header'
->>>>>>> origin/yogesh
 
   return (
-<<<<<<< HEAD
     <div className="container mx-auto p-6 max-w-4xl">
+      <Header />
       <h1 className="text-3xl font-bold text-center mb-6">Train Ticket Booking</h1>
-=======
-    <>
-    <Header/>
-    <div>Bus</div>
-    </>
-  )
-}
->>>>>>> origin/yogesh
 
       {/* Search Section */}
       <div className="flex gap-4 mb-6">

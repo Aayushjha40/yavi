@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
-import logo from './logo.png';
+import logo from '../assets/logo.png';
 
 function SignupForUser() {
    const navigate = useNavigate();

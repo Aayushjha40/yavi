@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
 
 const BusBooking = () => {
@@ -52,18 +51,5 @@ const BusBooking = () => {
     </div>
   );
 };
-=======
-import React from 'react'
-import Header from '../../components/Header'
-const Bus = () => {
-  return (
-    <>
-    <Header/>
-    <div>Bus</div>
-    </>
-   
-  )
-}
->>>>>>> origin/yogesh
 
 export default BusBooking;
