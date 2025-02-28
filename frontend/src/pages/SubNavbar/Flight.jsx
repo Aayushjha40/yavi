@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 
 const Flight = () => {
@@ -10,6 +11,18 @@ const Flight = () => {
     passengers: 1,
     travelClass: 'economy',
   });
+=======
+import React from 'react'
+import Header from '../../components/Header'
+const Flight = () => {
+  return (
+    <>
+    <Header/>
+    <div>Bus</div>
+    </>
+  )
+}
+>>>>>>> origin/yogesh
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
