@@ -10,11 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "axios": "^1.8.0",
+    "gsap": "^3.12.7",
     "lucide-react": "^0.476.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "react-slick": "^0.30.3",
+    "remixicon": "^4.6.0",
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
