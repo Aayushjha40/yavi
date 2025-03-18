@@ -1,50 +1,100 @@
-import React from 'react'
-import { useNavigate } from "react-router-dom";
-import logo from '../assets/logo.png';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { UserDataContext } from '../../context/UserContext';
 
-function SignupForUser() {
-   const navigate = useNavigate();
+const SignupForUser = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
+  const { setUser } = useContext(UserDataContext);
+
+  const submitHandler = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+
+    const newUser = { 
+      name: username, // ✅ Changed "username" to "name"
+      email, 
+      password 
+    };
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/users/register`,
+        newUser,
+        { withCredentials: true }
+      );
+
+      if (response && response.status === 201) {
+        setUser(response.data.user);
+        localStorage.setItem('token', response.data.token);
+        navigate('/LoginForUser');
+      }
+    } catch (error) {
+      console.error('Error response:', error.response?.data || error.message); // Improved error logging
+    }
+
+    // ✅ Clear input fields after successful submission
+    setUsername('');
+    setEmail('');
+    setPassword('');
+  };
+
   return (
-     <div className="m-0 p-0 bg-cover bg-center" style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?nature,green')" }}>
-                <nav className="flex justify-between items-center px-20 py-3  bg-opacity-50">
-                    <div className="logo">
-                        <img src={logo} alt="Yavi Logo" className="h-8" />
-                    </div>
-                    <div className="flex space-x-4">
-                        <button className="bg-white text-green-600 px-4 py-1 rounded-full border border-green-700">Help</button>
-                        {/* <button className="bg-green-700 text-white px-4 py-1 rounded-full">User</button> */}
-                    </div>
-                </nav>
-                
-                <div className="flex flex-wrap justify-between px-24 py-16">
-                    <div className="moto  bg-opacity-50 text-white p-12 rounded-lg w-150">
-                        <h3 className="text-lg text-black">Today's Quotes</h3>
-                        <br />
-                        <h1 className="text-2xl font-bold text-black text-5xl">" Earth Loves You,<br /> Love it Back."</h1>
-                    </div>
-                    <form method='get' action="register" className="bg-green-600 bg-opacity-50 p-8 rounded-lg w-80 flex flex-col items-center">
-                        <h2 className="text-white text-xl opacity-90">SignUp</h2>
-                        <label htmlFor="create username" className="text-white opacity-90 mt-4">create username</label>
-                        <input type="text" id="create username" placeholder="Enter Username" className="mt-1 p-2 w-full rounded-full bg-white bg-opacity-70 focus:outline-none" />
+    <div className="m-0 p-0 bg-cover bg-center" style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?nature,green')" }}>
+      <div className="flex flex-wrap justify-between px-24 py-16">
+        <div className="moto bg-opacity-50 text-white p-12 rounded-lg w-150">
+          <h3 className="text-lg text-black">Today's Quotes</h3>
+          <br />
+          <h1 className="text-2xl font-bold text-black text-5xl">"Earth Loves You, Love it Back."</h1>
+        </div>
+        <form onSubmit={submitHandler} className="bg-green-600 bg-opacity-50 p-8 rounded-lg w-80 flex flex-col items-center">
+          <h2 className="text-white text-xl opacity-90">SignUp</h2>
+          <label htmlFor="create-username" className="text-white opacity-90 mt-4">Create Username</label>
+          <input
+            type="text"
+            id="create-username"
+            placeholder="Enter Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className="mt-1 p-2 w-full rounded-full bg-white bg-opacity-70 focus:outline-none"
+          />
 
-                        <label htmlFor="email" className="text-white opacity-90 mt-4">email</label>
-                        <input type="text" id="email" placeholder="Enter email" className="mt-1 p-2 w-full rounded-full bg-white bg-opacity-70 focus:outline-none" />
+          <label htmlFor="email" className="text-white opacity-90 mt-4">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="mt-1 p-2 w-full rounded-full bg-white bg-opacity-70 focus:outline-none"
+          />
 
-                        
-                        <label htmlFor="pass" className="text-white opacity-90 mt-4">Password</label>
-                        <input type="password" id="pass" placeholder="Enter Password" className="mt-1 p-2 w-full rounded-full bg-white bg-opacity-70 focus:outline-none" />
-                        
-                        <a href="#" className="text-white text-sm opacity-80 mt-2">Forget password?</a>
-                        <button className="mt-4 bg-green-700 text-white px-6 py-2 rounded-full">Register</button>
-                        <hr className="w-full my-4 opacity-20" />
-                        <h3 className="text-white opacity-90">Already Registered?</h3>
-                        
-                        <button className="mt-2 bg-white text-green-700 px-6 py-2 rounded-full "  onClick={() => navigate("/")}>login</button>
-                    </form>
-                    
-                </div>
-            </div>
-  )
-}
+          <label htmlFor="password" className="text-white opacity-90 mt-4">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength="6" // ✅ Added minLength to ensure correct password length
+            className="mt-1 p-2 w-full rounded-full bg-white bg-opacity-70 focus:outline-none"
+          />
 
-export default SignupForUser
+          <a href="#" className="text-white text-sm opacity-80 mt-2">Forget password?</a>
+          <button type="submit" className="mt-4 bg-green-700 text-white px-6 py-2 rounded-full">Register</button>
+          <hr className="w-full my-4 opacity-20" />
+          <h3 className="text-white opacity-90">Already Registered?</h3>
+          <button type="button" className="mt-2 bg-white text-green-700 px-6 py-2 rounded-full" onClick={() => navigate("/LoginForUser")}>Login</button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default SignupForUser;

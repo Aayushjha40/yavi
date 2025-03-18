@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import Home from '../pages/Home';
 import LoginForUser from '../pages/Login/LoginForUser';
-import SignupForUser from '../pages/Login/SignupForAdmin'; // Updated import
+import SignupForUser from '../pages/Login/SignupForUser'; // Updated import
 import LoginForAgency from '../pages/Login/LoginForAgency';
 import LoginForAdmin from '../pages/Login/LoginForAdmin';
 import SignupForAdmin from '../pages/Login/SignupForAdmin';
@@ -18,7 +18,8 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      { path: '', element: <LoginForUser /> },
+      { path: '', element: <Home /> },
+      { path: 'loginForUser', element: <LoginForUser /> }, 
       { path: 'signupForUser', element: <SignupForUser /> }, // Updated route path
       { path: 'home', element: <Home /> },
       { path: 'loginForAgency', element: <LoginForAgency /> },

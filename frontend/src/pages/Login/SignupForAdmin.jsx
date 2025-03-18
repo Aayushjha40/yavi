@@ -6,15 +6,6 @@ function SignupForAdmin() {
    const navigate = useNavigate();
   return (
      <div className="m-0 p-0 bg-cover bg-center" style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?nature,green')" }}>
-                <nav className="flex justify-between items-center px-20 py-3  bg-opacity-50">
-                    <div className="logo">
-                        <img src={logo} alt="Yavi Logo" className="h-8" />
-                    </div>
-                    <div className="flex space-x-4">
-                        <button className="bg-white text-green-600 px-4 py-1 rounded-full border border-green-700">Help</button>
-                        {/* <button className="bg-green-700 text-white px-4 py-1 rounded-full">User</button> */}
-                    </div>
-                </nav>
                 
                 <div className="flex flex-wrap justify-between px-24 py-16">
                     <div className="moto  bg-opacity-50 text-white p-12 rounded-lg w-96">

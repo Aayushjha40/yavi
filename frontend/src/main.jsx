@@ -8,10 +8,10 @@ import router from './routes/index.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* <UserContext>
-        <BrowserRouter> */}
+     <UserContext>
+        {/* <BrowserRouter> */} 
           <RouterProvider router={router}/>
-        {/* </BrowserRouter>
-      </UserContext> */}
+         {/* </BrowserRouter> */}
+      </UserContext>
   </StrictMode>,
 )
