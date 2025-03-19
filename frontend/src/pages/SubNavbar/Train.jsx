@@ -1,120 +1,91 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { Search, Train as TrainIcon, MapPin, Calendar, Shield, CheckCircle, MapPinned, Coffee, Headphones } from 'lucide-react';
+import trainBg from '../../assets/trainBg.jpg'; // Adjust the path as necessary
 
-const TrainBooking = () => {
-  const [searchParams, setSearchParams] = useState({ source: "", destination: "", date: "" });
-  const [trains, setTrains] = useState([]);
-  const [selectedTrain, setSelectedTrain] = useState(null);
-  const [passengerDetails, setPassengerDetails] = useState([]);
-  const [selectedSeats, setSelectedSeats] = useState([]);
-  const seatPrice = 500;
+function TrainBooking() {
+  const [date, setDate] = useState('2025-02-28');
+  const [cancellation, setCancellation] = useState(true);
 
-  const availableTrains = [
-    { id: 1, name: "Express 101", departure: "10:00 AM", arrival: "2:00 PM" },
-    { id: 2, name: "Superfast 202", departure: "11:30 AM", arrival: "3:30 PM" },
-  ];
-
-  const searchTrains = () => {
-    setTrains(availableTrains);
+  const setTomorrow = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    setDate(tomorrow.toISOString().split('T')[0]);
   };
 
-  const handleSeatSelection = (seatNumber) => {
-    setSelectedSeats((prevSeats) =>
-      prevSeats.includes(seatNumber) ? prevSeats.filter((s) => s !== seatNumber) : [...prevSeats, seatNumber]
-    );
-  };
-
-  const addPassenger = () => {
-    setPassengerDetails([...passengerDetails, { name: "", age: "", gender: "" }]);
-  };
-
-  const handlePassengerChange = (index, field, value) => {
-    const updatedPassengers = [...passengerDetails];
-    updatedPassengers[index][field] = value;
-    setPassengerDetails(updatedPassengers);
-  };
-
-  const bookTicket = () => {
-    if (!selectedTrain || selectedSeats.length === 0 || passengerDetails.length === 0) {
-      alert("Please select train, seats, and enter passenger details.");
-      return;
-    }
-    alert(`Booking confirmed for ${passengerDetails.length} passenger(s) on ${selectedTrain.name}. Total Cost: ₹${selectedSeats.length * seatPrice}`);
+  const setDayAfter = () => {
+    const dayAfter = new Date();
+    dayAfter.setDate(dayAfter.getDate() + 2);
+    setDate(dayAfter.toISOString().split('T')[0]);
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
-      <h1 className="text-3xl font-bold text-center mb-6">Train Ticket Booking</h1>
-
-      {/* Search Section */}
-      <div className="flex gap-4 mb-6">
-        <input type="text" placeholder="From" className="border p-2 w-full" onChange={(e) => setSearchParams({ ...searchParams, source: e.target.value })} />
-        <input type="text" placeholder="To" className="border p-2 w-full" onChange={(e) => setSearchParams({ ...searchParams, destination: e.target.value })} />
-        <input type="date" className="border p-2" onChange={(e) => setSearchParams({ ...searchParams, date: e.target.value })} />
-        <button className="bg-blue-500 text-white px-4 py-2" onClick={searchTrains}>Search</button>
-      </div>
-
-      {/* Train Listing */}
-      {trains.length > 0 && (
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Available Trains</h2>
-          {trains.map((train) => (
-            <div key={train.id} className="border p-4 mb-2 flex justify-between items-center">
-              <div>
-                <p className="font-bold">{train.name}</p>
-                <p>{train.departure} - {train.arrival}</p>
-              </div>
-              <button className="bg-green-500 text-white px-4 py-2" onClick={() => setSelectedTrain(train)}>Select</button>
-            </div>
-          ))}
+    <div className="min-h-screen bg-gray-100 font-sans">
+      {/* Hero Section with Background Image */}
+      <header
+        className="relative h-80 bg-cover bg-center flex flex-col justify-center items-center text-white text-center shadow-lg"
+        style={{ backgroundImage: `url(${trainBg})` }}
+      >
+        <div className="bg-black bg-opacity-50 absolute inset-0"></div>
+        <div className="relative z-10">
+          <h1 className="text-5xl font-bold">Train Ticket Booking</h1>
+          <p className="text-lg mt-2">IRCTC Authorized Partner</p>
         </div>
-      )}
-
-      {/* Seat Selection */}
-      {selectedTrain && (
-        <div className="mt-6 border p-4">
-          <h2 className="text-xl font-semibold mb-2">Select Seats (₹{seatPrice} each)</h2>
-          <div className="grid grid-cols-6 gap-2">
-            {[...Array(30).keys()].map((seat) => (
-              <button
-                key={seat + 1}
-                className={`p-2 w-12 border ${selectedSeats.includes(seat + 1) ? "bg-green-500 text-white" : "bg-gray-200"}`}
-                onClick={() => handleSeatSelection(seat + 1)}
-              >
-                {seat + 1}
-              </button>
+      </header>
+      
+      {/* Search Form */}
+      <main className="container mx-auto px-4 relative -mt-20 z-20"> {/* Adjusted margin-top value and added relative positioning */}
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {['From', 'To'].map((placeholder, index) => (
+              <div key={index} className="border rounded-lg p-4 flex items-center bg-gray-50">
+                {index === 0 ? <TrainIcon className="text-gray-700 mr-3" size={20} /> : <MapPin className="text-gray-700 mr-3" size={20} />}
+                <input type="text" placeholder={placeholder} className="w-full focus:outline-none text-lg bg-transparent" />
+              </div>
             ))}
+            <div className="border rounded-lg p-4 bg-gray-50 flex flex-col">
+              <div className="flex items-center">
+                <Calendar className="text-gray-700 mr-3" size={20} />
+                <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 bg-white" />
+              </div>
+              <div className="flex mt-2 space-x-2">
+                <button className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full" onClick={setTomorrow}>Tomorrow</button>
+                <button className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full" onClick={setDayAfter}>Day After</button>
+              </div>
+            </div>
+            <div className="border rounded-lg p-4 flex items-center bg-gray-50 justify-between">
+              <div className="flex items-center">
+                <Shield className="text-gray-700 mr-3" size={20} />
+                <span className="font-medium">Free Cancellation</span>
+              </div>
+              <input type="checkbox" checked={cancellation} onChange={() => setCancellation(!cancellation)} className="cursor-pointer" />
+            </div>
+          </div>
+          <div className="mt-6 flex justify-center">
+            <button className="bg-blue-700 hover:bg-blue-800 text-white font-medium py-3 px-8 rounded-full flex items-center shadow-md">
+              <Search className="mr-2" size={20} /> Search Trains
+            </button>
           </div>
         </div>
-      )}
-
-      {/* Passenger Details */}
-      {selectedSeats.length > 0 && (
-        <div className="mt-6 border p-4">
-          <h2 className="text-xl font-semibold mb-2">Passenger Details</h2>
-          {passengerDetails.map((passenger, index) => (
-            <div key={index} className="mb-3">
-              <input type="text" placeholder="Name" className="border p-2 w-full mb-2" onChange={(e) => handlePassengerChange(index, "name", e.target.value)} />
-              <input type="number" placeholder="Age" className="border p-2 w-full mb-2" onChange={(e) => handlePassengerChange(index, "age", e.target.value)} />
-              <select className="border p-2 w-full mb-2" onChange={(e) => handlePassengerChange(index, "gender", e.target.value)}>
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
+      </main>
+      
+      {/* Features Section */}
+      <section className="container mx-auto px-4 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {[ 
+            { icon: <CheckCircle size={40} className="text-blue-700" />, text: "Check PNR Status" },
+            { icon: <MapPinned size={40} className="text-blue-700" />, text: "Live Train Status" },
+            { icon: <Coffee size={40} className="text-blue-700" />, text: "Order Food" },
+            { icon: <Headphones size={40} className="text-blue-700" />, text: "Rail Madad" }
+          ].map((feature, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center transition-transform transform hover:scale-105">
+              <div className="mb-3">{feature.icon}</div>
+              <h3 className="text-lg font-medium text-center">{feature.text}</h3>
             </div>
           ))}
-          <button className="bg-yellow-500 text-white px-4 py-2" onClick={addPassenger}>Add Passenger</button>
         </div>
-      )}
-
-      {/* Booking Confirmation */}
-      {passengerDetails.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold">Total Cost: ₹{selectedSeats.length * seatPrice}</h2>
-          <button className="bg-red-500 text-white px-4 py-2 mt-4" onClick={bookTicket}>Confirm Booking</button>
-        </div>
-      )}
+      </section>
     </div>
   );
-};
+}
 
 export default TrainBooking;

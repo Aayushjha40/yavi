@@ -10,6 +10,9 @@ import Flight from '../pages/SubNavbar/Flight'
 import Train from '../pages/SubNavbar/Train'
 import EcoFriendlyZone from '../pages/SubNavbar/EcoFriendlyZone'
 import Card from '../pages/Card';
+import Dashboard from '../pages/dashboard/userd';
+import AdminDashboard from '../pages/dashboard/Admind'
+
 
 const router = createBrowserRouter([
     {
@@ -26,8 +29,8 @@ const router = createBrowserRouter([
             {path : "flight", element : <Flight/>},
             {path : "ecoFriendlyZone", element : <EcoFriendlyZone/>},
             {path : "card", element : <Card/>},
-
-            
+            { path: "dashboard", element: <Dashboard /> },
+            {path : "admindashboard", element : <AdminDashboard/>}
         ]
     }
 ])
