@@ -70,24 +70,16 @@ module.exports.getUserProfile = async (req, res, next) => {
 }
 
 module.exports.logoutUser = async (req, res, next) => {
-  const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+  const token = req.cookies.token || req.headers.authorization.split(' ')[1];
 
   try {
-    if (token) {
-      await blackListTokenModel.create({ token }); // Blacklist the token
-    }
-
-    res.clearCookie('token', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Ensures it works in production
-      sameSite: 'None',
-    });
-
-    res.status(200).json({ message: 'Logged out successfully' });
+    await blackListTokenModel.create({ token });
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Logged out' });
   } catch (err) {
     if (err.code === 11000) {
       return res.status(400).json({ message: 'Token already blacklisted' });
     }
     return next(err);
   }
-};
+}

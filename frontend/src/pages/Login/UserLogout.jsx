@@ -15,7 +15,7 @@ const UserLogout = () => {
         });
         localStorage.removeItem('token');
         setUser(null);
-        navigate('/login');
+        navigate('/LoginForUser');
       } catch (error) {
         console.error('Error logging out:', error);
       }
@@ -23,6 +23,10 @@ const UserLogout = () => {
 
     logout();
   }, [navigate, setUser]);
+
+  return (
+    <div>Logging out...</div>
+  );
 };
 
 export default UserLogout;

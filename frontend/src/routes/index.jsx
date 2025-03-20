@@ -16,7 +16,6 @@ import Card from '../pages/Card';
 import MostBooking from '../pages/MostBooking';
 import Trending from '../pages/Trending';
 import ExistingTrip from '../pages/ExistingTrip';
-import Coins from '../pages/Coins';
 
 const router = createBrowserRouter([
   {
@@ -34,7 +33,6 @@ const router = createBrowserRouter([
       { path: 'bus', element: <Bus /> },
       { path: 'hotel', element: <Hotel /> },
       { path: 'train', element: <Train /> },
-      { path: 'coins', element: <Coins /> },
       { path: 'flight', element: <Flight /> },
       { path: 'ecoFriendlyZone', element: <EcoFriendlyZone /> },
       { path: 'card/:id', element: <Card /> },
