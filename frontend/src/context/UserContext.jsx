@@ -1,20 +1,33 @@
-import React, { useState, createContext } from 'react'
+import React, { useState, useEffect, createContext } from 'react';
 
-export const UserDataContext = createContext()
+export const UserDataContext = createContext();
 
 const UserContext = ({ children }) => {
-    const [user, setUser] = useState({
-        email: '',
-        name: '',
-    })
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-        return (
-            <div>
-                <UserDataContext.Provider value={{user, setUser }}>
-                    {children}
-                </UserDataContext.Provider>
-            </div>
-        )
-    }
+    useEffect(() => {
+        fetch('/api/users/profile', { credentials: 'include' }) // Fetch user from backend
+            .then(res => res.json())
+            .then(data => {
+                if (data?.email) {
+                    setUser(data);
+                } else {
+                    setUser(null);
+                }
+                setLoading(false);
+            })
+            .catch(() => {
+                setUser(null);
+                setLoading(false);
+            });
+    }, []);
 
-    export default UserContext
+    return (
+        <UserDataContext.Provider value={{ user, setUser, loading }}>
+            {children}
+        </UserDataContext.Provider>
+    );
+};
+
+export default UserContext;

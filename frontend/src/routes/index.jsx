@@ -6,6 +6,7 @@ import SignupForUser from '../pages/Login/SignupForUser';
 import LoginForAgency from '../pages/Login/LoginForAgency';
 import LoginForAdmin from '../pages/Login/LoginForAdmin';
 import SignupForAdmin from '../pages/Login/SignupForAdmin';
+import UserLogout from '../pages/Login/UserLogout';
 import Bus from '../pages/SubNavbar/Bus';
 import Hotel from '../pages/SubNavbar/Hotel';
 import Flight from '../pages/SubNavbar/Flight';
@@ -15,6 +16,7 @@ import Card from '../pages/Card';
 import MostBooking from '../pages/MostBooking';
 import Trending from '../pages/Trending';
 import ExistingTrip from '../pages/ExistingTrip';
+import Coins from '../pages/Coins';
 
 const router = createBrowserRouter([
   {
@@ -28,9 +30,11 @@ const router = createBrowserRouter([
       { path: 'loginForAgency', element: <LoginForAgency /> },
       { path: 'loginForAdmin', element: <LoginForAdmin /> },
       { path: 'signupForAdmin', element: <SignupForAdmin /> },
+      { path: 'logout', element: <UserLogout /> },
       { path: 'bus', element: <Bus /> },
       { path: 'hotel', element: <Hotel /> },
       { path: 'train', element: <Train /> },
+      { path: 'coins', element: <Coins /> },
       { path: 'flight', element: <Flight /> },
       { path: 'ecoFriendlyZone', element: <EcoFriendlyZone /> },
       { path: 'card/:id', element: <Card /> },
