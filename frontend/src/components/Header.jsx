@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserDataContext } from '../context/UserContext';
 import logo from '../assets/logo.png';
 import login from '../assets/login.png';
 import coin from '../assets/coin.png';
@@ -10,8 +11,11 @@ import bush from '../assets/bush.png';
 import ecozone from '../assets/ecozone.png';
 
 const Header = () => {
+  const { user, setUser } = useContext(UserDataContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +30,14 @@ const Header = () => {
 
   const closeDropdown = () => {
     setDropdownOpen(false);
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const logout = () => {
+    navigate('/logout');
   };
 
   const navItems = [
@@ -82,7 +94,7 @@ const Header = () => {
 
           {/* Icons */}
           <span className="bg-gray-300 p-2 w-10 h-10 border border-gray-400 rounded-full flex items-center justify-center">
-            <img src={coin} alt="Coin" width={22} />
+            <Link to="Coins"><img src={coin} alt="Coin" width={22} /></Link> 
           </span>
 
           <span className="bg-[#00798C] p-2 w-10 h-10 border border-gray-400 rounded-full flex items-center justify-center">
@@ -106,15 +118,24 @@ const Header = () => {
           <div className="relative">
             <div
               className="bg-[#00798C] p-2 w-10 h-10 border border-gray-400 rounded-full flex items-center justify-center cursor-pointer"
-              onClick={() => setDropdownOpen(!dropdownOpen)}
+              onClick={user ? toggleSidebar : () => setDropdownOpen(!dropdownOpen)}
             >
               <img src={login} alt="Login Icon" width={22} />
             </div>
-            {dropdownOpen && (
+            {!user && dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-[#38cfe7] border border-gray-200 rounded-lg shadow-lg">
                 <Link to="/LoginForUser" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>User Login</Link>
-                <Link to="LoginForAgency" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Agency Login</Link>
+                <Link to="/LoginForAgency" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Agency Login</Link>
                 <Link to="/LoginForAdmin" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Admin Login</Link>
+              </div>
+            )}
+            {user && sidebarOpen && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+                <div className="fixed right-0 top-0 h-full w-64 bg-white shadow-lg z-50 p-4">
+                  <button className="absolute top-4 right-4 text-gray-600" onClick={toggleSidebar}>Close</button>
+                  <h2 className="text-xl font-bold">Welcome, {user.name}!</h2>
+                  <button onClick={logout} className="mt-4 px-4 py-2 bg-red-500 text-white rounded">Logout</button>
+                </div>
               </div>
             )}
           </div>
