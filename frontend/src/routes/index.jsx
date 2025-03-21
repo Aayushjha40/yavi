@@ -13,34 +13,26 @@ import Flight from '../pages/SubNavbar/Flight';
 import Train from '../pages/SubNavbar/Train';
 import EcoFriendlyZone from '../pages/SubNavbar/EcoFriendlyZone';
 import Card from '../pages/Card';
-import MostBooking from '../pages/MostBooking';
-import Trending from '../pages/Trending';
-import ExistingTrip from '../pages/ExistingTrip';
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      { path: '', element: <Home /> },
-      { path: 'loginForUser', element: <LoginForUser /> },
-      { path: 'signupForUser', element: <SignupForUser /> },
-      { path: 'home', element: <Home /> },
-      { path: 'loginForAgency', element: <LoginForAgency /> },
-      { path: 'loginForAdmin', element: <LoginForAdmin /> },
-      { path: 'signupForAdmin', element: <SignupForAdmin /> },
-      { path: 'logout', element: <UserLogout /> },
-      { path: 'bus', element: <Bus /> },
-      { path: 'hotel', element: <Hotel /> },
-      { path: 'train', element: <Train /> },
-      { path: 'flight', element: <Flight /> },
-      { path: 'ecoFriendlyZone', element: <EcoFriendlyZone /> },
-      { path: 'card/:id', element: <Card /> },
-      { path: 'most-booking', element: <MostBooking /> },
-      { path: 'trending', element: <Trending /> },
-      { path: 'existing-trip', element: <ExistingTrip /> },
-    ],
-  },
-]);
+    {
+        path : "/",
+        element : <App/>,
+        children : [
+            {path : "", element : <Home/>},
+            {path : "loginForUser", element : <LoginForUser/>},
+            {path : "loginForAgency", element : <LoginForAgency/>},
+            {path : "loginForAdmin", element : <LoginForAdmin/>},
+            {path : "bus", element : <Bus/>},
+            {path : "hotel", element : <Hotel/>},
+            {path : "train", element : <Train/>},
+            {path : "flight", element : <Flight/>},
+            {path : "ecoFriendlyZone", element : <EcoFriendlyZone/>},
+            {path : "card", element : <Card/>},
+
+            
+        ]
+    }
+])
 
 export default router;
