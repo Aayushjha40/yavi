@@ -39,8 +39,8 @@ function MostBooking() {
       <h1 className='text-6xl font-medium font-serif text-center mt-3 mb-6'>Most Booking Plan</h1>
       <Slider {...settings}>
         {cards.map(card => (
-          <div key={card.id} className="p-4" onClick={() => handleCardClick(card.id)}>
-            <div className="w-[270px] h-[350px] bg-white m-3 rounded-sm shadow-lg flex flex-col hover:bg-gray-200 transition-colors duration-300 cursor-pointer">
+          <div key={card.id} className="p-4" >
+            <div className="w-[270px] h-[350px] bg-white m-3 rounded-sm shadow-lg flex flex-col hover:bg-gray-200 transition-colors duration-300 cursor-pointer" onClick={() => handleCardClick(card.id)}>
               <div className="flex-1">
                 <img src={card.image} alt={card.title} className="w-[260px] h-[260px] m-1 object-cover rounded-sm" />
               </div>
