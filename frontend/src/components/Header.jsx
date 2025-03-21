@@ -94,7 +94,9 @@ const Header = () => {
 
           {/* Icons */}
           <span className="bg-gray-300 p-2 w-10 h-10 border border-gray-400 rounded-full flex items-center justify-center">
-            <Link to="Coins"><img src={coin} alt="Coin" width={22} /></Link> 
+            <Link to="/coins">
+              <img src={coin} alt="Coin" width={22} />
+            </Link>
           </span>
 
           <span className="bg-[#00798C] p-2 w-10 h-10 border border-gray-400 rounded-full flex items-center justify-center">
@@ -131,7 +133,7 @@ const Header = () => {
             )}
             {user && sidebarOpen && (
               <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
-                <div className="fixed right-0 top-0 h-full w-64 bg-white shadow-lg z-50 p-4">
+                <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-lg z-50 p-4">
                   <button className="absolute top-4 right-4 text-gray-600" onClick={toggleSidebar}>Close</button>
                   <h2 className="text-xl font-bold">Welcome, {user.name}!</h2>
                   <button onClick={logout} className="mt-4 px-4 py-2 bg-red-500 text-white rounded">Logout</button>

@@ -17,6 +17,9 @@ import MostBooking from '../pages/MostBooking';
 import Trending from '../pages/Trending';
 import ExistingTrip from '../pages/ExistingTrip';
 import Coins from '../pages/Coins';
+import Admind from '../pages/dashboard/Admind';
+import Userd from '../pages/dashboard/Userd';
+
 
 const router = createBrowserRouter([
   {
@@ -41,6 +44,8 @@ const router = createBrowserRouter([
       { path: 'most-booking', element: <MostBooking /> },
       { path: 'trending', element: <Trending /> },
       { path: 'existing-trip', element: <ExistingTrip /> },
+      { path: 'admin', element: <Admind /> },
+      { path: 'userd', element: <Userd /> },
     ],
   },
 ]);
