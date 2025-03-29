@@ -4,8 +4,7 @@ import Home from '../pages/Home';
 import LoginForUser from '../pages/Login/LoginForUser';
 import SignupForUser from '../pages/Login/SignupForUser';
 import LoginForAgency from '../pages/Login/LoginForAgency';
-import LoginForAdmin from '../pages/Login/LoginForAdmin';
-import SignupForAdmin from '../pages/Login/SignupForAdmin';
+import SignupForAgency from '../pages/Login/SignupForAgency';
 import UserLogout from '../pages/Login/UserLogout';
 import Bus from '../pages/SubNavbar/Bus';
 import Hotel from '../pages/SubNavbar/Hotel';
@@ -20,6 +19,14 @@ import Coins from '../pages/Coins';
 import Admind from '../pages/dashboard/Admind';
 import Userd from '../pages/dashboard/Userd';
 
+// Import sidebar components
+import MyProfile from '../pages/user_panel/my_profile';
+import MyBookings from '../pages/user_panel/my_bookings';
+import Wishlist from '../pages/user_panel/wishlist';
+import Rewards from '../pages/user_panel/rewards';
+import EcoZone from '../pages/user_panel/eco_zone';
+import Support from '../pages/user_panel/support';
+import Settings from '../pages/user_panel/settings';
 
 const router = createBrowserRouter([
   {
@@ -31,8 +38,7 @@ const router = createBrowserRouter([
       { path: 'signupForUser', element: <SignupForUser /> },
       { path: 'home', element: <Home /> },
       { path: 'loginForAgency', element: <LoginForAgency /> },
-      { path: 'loginForAdmin', element: <LoginForAdmin /> },
-      { path: 'signupForAdmin', element: <SignupForAdmin /> },
+      { path: 'signupForAgency', element: <SignupForAgency /> },
       { path: 'logout', element: <UserLogout /> },
       { path: 'bus', element: <Bus /> },
       { path: 'hotel', element: <Hotel /> },
@@ -46,6 +52,15 @@ const router = createBrowserRouter([
       { path: 'existing-trip', element: <ExistingTrip /> },
       { path: 'admin', element: <Admind /> },
       { path: 'userd', element: <Userd /> },
+
+      // Sidebar paths
+      { path: 'userd/myprofile', element: <MyProfile /> },
+      { path: 'userd/mybookings', element: <MyBookings /> },
+      { path: 'userd/wishlist', element: <Wishlist /> },
+      { path: 'userd/rewards', element: <Rewards /> },
+      { path: 'userd/ecozone', element: <EcoZone /> },
+      { path: 'userd/support', element: <Support /> },
+      { path: 'userd/settings', element: <Settings /> },
     ],
   },
 ]);

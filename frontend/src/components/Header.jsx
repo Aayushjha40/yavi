@@ -128,15 +128,72 @@ const Header = () => {
               <div className="absolute right-0 mt-2 w-48 bg-[#38cfe7] border border-gray-200 rounded-lg shadow-lg">
                 <Link to="/LoginForUser" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>User Login</Link>
                 <Link to="/LoginForAgency" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Agency Login</Link>
-                <Link to="/LoginForAdmin" className="block px-4 py-2 text-gray-900 hover:bg-[#0293a9]" onClick={closeDropdown}>Admin Login</Link>
               </div>
             )}
             {user && sidebarOpen && (
               <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
                 <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-lg z-50 p-4">
-                  <button className="absolute top-4 right-4 text-gray-600" onClick={toggleSidebar}>Close</button>
-                  <h2 className="text-xl font-bold">Welcome, {user.name}!</h2>
-                  <button onClick={logout} className="mt-4 px-4 py-2 bg-red-500 text-white rounded">Logout</button>
+                  <button className="absolute top-4 right-4 text-gray-600" onClick={toggleSidebar}>
+                    Close
+                  </button>
+                  <h2 className="text-xl font-bold mb-6">Welcome, {user.name}!</h2>
+                  <nav className="space-y-4">
+                    <Link
+                      to="/userd/myprofile"
+                      className="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg"
+                      onClick={toggleSidebar}
+                    >
+                      My Profile
+                    </Link>
+                    <Link
+                      to="/userd/mybookings"
+                      className="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg"
+                      onClick={toggleSidebar}
+                    >
+                      My Bookings
+                    </Link>
+                    <Link
+                      to="/userd/wishlist"
+                      className="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg"
+                      onClick={toggleSidebar}
+                    >
+                      Wishlist
+                    </Link>
+                    <Link
+                      to="/userd/rewards"
+                      className="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg"
+                      onClick={toggleSidebar}
+                    >
+                      Rewards
+                    </Link>
+                    <Link
+                      to="/userd/ecozone"
+                      className="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg"
+                      onClick={toggleSidebar}
+                    >
+                      Eco Zone
+                    </Link>
+                    <Link
+                      to="/userd/support"
+                      className="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg"
+                      onClick={toggleSidebar}
+                    >
+                      Support
+                    </Link>
+                    <Link
+                      to="/userd/settings"
+                      className="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-lg"
+                      onClick={toggleSidebar}
+                    >
+                      Settings
+                    </Link>
+                    <button
+                      onClick={logout}
+                      className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 rounded-lg"
+                    >
+                      Logout
+                    </button>
+                  </nav>
                 </div>
               </div>
             )}
