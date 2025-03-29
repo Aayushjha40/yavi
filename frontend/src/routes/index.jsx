@@ -4,8 +4,7 @@ import Home from '../pages/Home';
 import LoginForUser from '../pages/Login/LoginForUser';
 import SignupForUser from '../pages/Login/SignupForUser';
 import LoginForAgency from '../pages/Login/LoginForAgency';
-import LoginForAdmin from '../pages/Login/LoginForAdmin';
-import SignupForAdmin from '../pages/Login/SignupForAdmin';
+import SignupForAgency from '../pages/Login/SignupForAgency';
 import UserLogout from '../pages/Login/UserLogout';
 import Bus from '../pages/SubNavbar/Bus';
 import Hotel from '../pages/SubNavbar/Hotel';
@@ -31,8 +30,7 @@ const router = createBrowserRouter([
       { path: 'signupForUser', element: <SignupForUser /> },
       { path: 'home', element: <Home /> },
       { path: 'loginForAgency', element: <LoginForAgency /> },
-      { path: 'loginForAdmin', element: <LoginForAdmin /> },
-      { path: 'signupForAdmin', element: <SignupForAdmin /> },
+      { path: 'signupForAgency', element: <SignupForAgency /> },
       { path: 'logout', element: <UserLogout /> },
       { path: 'bus', element: <Bus /> },
       { path: 'hotel', element: <Hotel /> },
