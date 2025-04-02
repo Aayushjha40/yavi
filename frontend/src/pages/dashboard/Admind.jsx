@@ -35,7 +35,7 @@ const menuItems = [
 
 function Sidebar({ isOpen, toggleSidebar, setActiveItem, activeItem }) {
   return (
-    <div className={`${isOpen ? 'w-64' : 'w-20'} bg-white h-screen p-5 pt-8 relative duration-300 shadow-lg`}>
+    <div className={`${isOpen ? 'w-64' : 'w-20'} bg-white h-screen p-5 pt-8 relative duration-300 shadow-lg flex flex-col`}>
       <div
         className="absolute cursor-pointer -right-3 top-9 w-7 h-7 bg-white border-2 rounded-full flex items-center justify-center"
         onClick={toggleSidebar}
@@ -43,7 +43,7 @@ function Sidebar({ isOpen, toggleSidebar, setActiveItem, activeItem }) {
         <Menu size={20} />
       </div>
       <h1 className={`text-xl font-medium origin-left duration-300 ${!isOpen && 'scale-0'}`}>Admin Panel</h1>
-      <ul className="pt-6">
+      <ul className="pt-6 flex-1 overflow-y-auto">
         {menuItems.map((item) => (
           <li
             key={item.name}
@@ -55,7 +55,7 @@ function Sidebar({ isOpen, toggleSidebar, setActiveItem, activeItem }) {
           </li>
         ))}
       </ul>
-      <div className="absolute bottom-4 flex rounded-md p-2 cursor-pointer hover:bg-gray-100 text-gray-700 text-sm items-center gap-x-4">
+      <div className="p-2 cursor-pointer hover:bg-gray-100 text-gray-700 text-sm items-center gap-x-4 flex">
         <LogOut size={20} />
         <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Logout</span>
       </div>
@@ -66,7 +66,7 @@ function Sidebar({ isOpen, toggleSidebar, setActiveItem, activeItem }) {
 function Content({ activeItem }) {
   const ActiveComponent = menuItems.find((item) => item.name === activeItem)?.component || (() => <p>Select a section</p>);
   return (
-    <div className="flex-1 p-7">
+    <div className="flex-1 p-7 overflow-y-auto h-full">
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">{activeItem}</h2>
         <ActiveComponent />
@@ -80,7 +80,7 @@ function Dashboard() {
   const [activeItem, setActiveItem] = useState('Users');
   
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
       <Sidebar isOpen={isOpen} toggleSidebar={() => setIsOpen(!isOpen)} setActiveItem={setActiveItem} activeItem={activeItem} />
       <Content activeItem={activeItem} />
     </div>
