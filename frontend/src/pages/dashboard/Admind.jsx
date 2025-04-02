@@ -66,9 +66,9 @@ function Sidebar({ isOpen, toggleSidebar, setActiveItem, activeItem }) {
 function Content({ activeItem }) {
   const ActiveComponent = menuItems.find((item) => item.name === activeItem)?.component || (() => <p>Select a section</p>);
   return (
-    <div className="flex-1 p-7">
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">{activeItem}</h2>
+    <div className="flex-1 ">
+      <div className="bg-white rounded-lg shadow-md ">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4"></h2>
         <ActiveComponent />
       </div>
     </div>
