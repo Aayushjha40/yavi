@@ -17,7 +17,23 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
-});
+  number: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  DOB: {
+    type: Date,
+    required: true,
+  },
+  nationality: {
+    type: String,
+    required: true,
+  },
+}, { timestamps: true });
 
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '24h' });

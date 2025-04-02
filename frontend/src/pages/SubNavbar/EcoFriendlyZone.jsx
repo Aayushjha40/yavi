@@ -9,14 +9,32 @@ const EcoFriendlyZone = () => {
   const [showThankYou, setShowThankYou] = useState(false);
   const fileInputRefs = useRef({});
 
-  const handleImageUpload = (event, categoryName) => {
+  // Updated handleImageUpload function
+  const handleImageUpload = async (event, categoryName) => {
     const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setUploadedImages((prev) => ({ ...prev, [categoryName]: imageUrl }));
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      const response = await fetch('http://localhost:4000/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.text(); // Capture error response
+        throw new Error(`Upload failed: ${errorData}`);
+      }
+  
+      const data = await response.json(); // Ensure JSON response
+      setUploadedImages((prev) => ({ ...prev, [categoryName]: data.url }));
+    } catch (error) {
+      console.error('Error uploading file:', error);
     }
   };
-
+  
   const triggerFileUpload = (categoryName) => {
     if (fileInputRefs.current[categoryName]) {
       fileInputRefs.current[categoryName].click();
@@ -34,12 +52,17 @@ const EcoFriendlyZone = () => {
   const isSubmitEnabled = Object.keys(uploadedImages).length > 0;
 
   return (
-    <div className="min-h-screen bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: `url(${naturebg})` }}>
+    <div
+      className="min-h-screen bg-cover bg-center flex justify-center items-center"
+      style={{ backgroundImage: `url(${naturebg})` }}
+    >
       {/* Thank You Message */}
       {showThankYou ? (
         <div className="bg-white p-6 rounded-lg shadow-lg text-center">
           <h2 className="text-2xl font-bold text-green-600">Thank You!</h2>
-          <p className="text-gray-600 mt-2">Your files have been submitted successfully. 🎉</p>
+          <p className="text-gray-600 mt-2">
+            Your files have been submitted successfully. 🎉
+          </p>
           <button
             className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md font-bold hover:bg-green-700"
             onClick={handleWelcomeClick}
@@ -52,8 +75,9 @@ const EcoFriendlyZone = () => {
           <div className="px-6 md:px-28 text-white">
             <h1 className="text-4xl pt-14 font-bold">Eco-friendly zone!</h1>
             <p className="opacity-50 mt-3">
-              Welcome to the eco-friendly zone! Upload your pics and videos related to the options given and earn points.
-              You can use those points for your next trips.
+              Welcome to the eco-friendly zone! Upload your pics and videos
+              related to the options given and earn points. You can use those
+              points for your next trips.
             </p>
           </div>
 
@@ -82,8 +106,14 @@ const EcoFriendlyZone = () => {
                   {/* Title and Icon */}
                   {!uploadedImages[category.name] && (
                     <div className="flex flex-col items-center">
-                      <h3 className="text-white text-lg mb-2">{category.name}</h3>
-                      <img src={category.img} alt={category.name} className="w-36 mb-4" />
+                      <h3 className="text-white text-lg mb-2">
+                        {category.name}
+                      </h3>
+                      <img
+                        src={category.img}
+                        alt={category.name}
+                        className="w-36 mb-4"
+                      />
                     </div>
                   )}
 
@@ -95,7 +125,9 @@ const EcoFriendlyZone = () => {
                     type="file"
                     className="hidden"
                     ref={(el) => (fileInputRefs.current[category.name] = el)}
-                    onChange={(event) => handleImageUpload(event, category.name)}
+                    onChange={(event) =>
+                      handleImageUpload(event, category.name)
+                    }
                   />
 
                   {/* Upload Button */}
@@ -114,7 +146,9 @@ const EcoFriendlyZone = () => {
           <div className="flex justify-center mt-6">
             <button
               className={`p-3 text-white font-bold rounded-lg w-40 transition-all ${
-                isSubmitEnabled ? "bg-green-600 hover:bg-green-700 cursor-pointer" : "bg-gray-400 cursor-not-allowed"
+                isSubmitEnabled
+                  ? "bg-green-600 hover:bg-green-700 cursor-pointer"
+                  : "bg-gray-400 cursor-not-allowed"
               }`}
               onClick={handleSubmit}
               disabled={!isSubmitEnabled}
