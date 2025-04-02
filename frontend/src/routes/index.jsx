@@ -16,8 +16,9 @@ import MostBooking from '../pages/MostBooking';
 import Trending from '../pages/Trending';
 import ExistingTrip from '../pages/ExistingTrip';
 import Coins from '../pages/Coins';
-import Admind from '../pages/dashboard/Admind';
-import Userd from '../pages/dashboard/Userd';
+import Admin from '../pages/dashboard/Admind';
+import User from '../pages/dashboard/Userd';
+import Agency from '../pages/dashboard/Agencyd';
 
 // Import sidebar components
 import MyProfile from '../pages/user_panel/my_profile';
@@ -50,8 +51,9 @@ const router = createBrowserRouter([
       { path: 'most-booking', element: <MostBooking /> },
       { path: 'trending', element: <Trending /> },
       { path: 'existing-trip', element: <ExistingTrip /> },
-      { path: 'admin', element: <Admind /> },
-      { path: 'userd', element: <Userd /> },
+      { path: 'admin', element: <Admin /> },
+      { path: 'user', element: <User /> },
+      { path: 'agency', element: <Agency /> },
 
       // Sidebar paths
       { path: 'userd/myprofile', element: <MyProfile /> },
