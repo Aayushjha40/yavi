@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
-import Header from '../../components/Header';
+import React, { useState } from "react";
 
 const Flight = () => {
-  // State for form fields
   const [formData, setFormData] = useState({
-    from: '',
-    to: '',
-    departureDate: '',
-    returnDate: '',
-    passengers: 1,
-    travelClass: 'economy',
+    from: "",
+    to: "",
+    departureDate: "",
   });
 
-  // State for trip type
-  const [tripType, setTripType] = useState('one-way');
+  const [flights, setFlights] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -21,111 +17,113 @@ const Flight = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  // Handle form submission & fetch flights
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form data:', formData);
+    setLoading(true);
+    setError("");
+    setFlights([]);
+
+    try {
+      const API_KEY = process.env.REACT_APP_FLIGHT_API_KEY; // Use .env file
+      const response = await fetch(
+        `https://api.aviationstack.com/v1/flights?access_key=${API_KEY}`
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch flight data");
+
+      const data = await response.json();
+
+      // Filter flights based on user input
+      const filteredFlights = data.data.filter(
+        (flight) =>
+          flight.departure.iata === formData.from.toUpperCase() &&
+          flight.arrival.iata === formData.to.toUpperCase() &&
+          flight.flight_date === formData.departureDate
+      );
+
+      if (filteredFlights.length === 0) {
+        setError("No flights found for the selected route and date.");
+      }
+
+      setFlights(filteredFlights);
+    } catch (err) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="max-w-md mx-auto p-8 border border-gray-300 rounded-lg bg-white shadow-lg">
-      <h1 className="text-3xl font-bold text-center mb-8 text-blue-600">Flight Booking</h1>
-      <div className="flex justify-around mb-8">
-        <button
-          className={`p-3 w-1/2 rounded-l-lg ${tripType === 'one-way' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          onClick={() => setTripType('one-way')}
-        >
-          One Way
-        </button>
-        <button
-          className={`p-3 w-1/2 rounded-r-lg ${tripType === 'round-trip' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          onClick={() => setTripType('round-trip')}
-        >
-          Round Trip
-        </button>
-      </div>
+      <h1 className="text-3xl font-bold text-center mb-8 text-blue-600">
+        Flight Booking
+      </h1>
+
       <form onSubmit={handleSubmit}>
-        <div className="mb-6">
-          <label className="block mb-2 text-gray-700">From:</label>
-          <input
-            type="text"
-            name="from"
-            value={formData.from}
-            onChange={handleInputChange}
-            required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block mb-2 text-gray-700">To:</label>
-          <input
-            type="text"
-            name="to"
-            value={formData.to}
-            onChange={handleInputChange}
-            required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="flex mb-6">
-          <div className="w-1/2 pr-2">
-            <label className="block mb-2 text-gray-700">Departure Date:</label>
-            <input
-              type="date"
-              name="departureDate"
-              value={formData.departureDate}
-              onChange={handleInputChange}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          {tripType === 'round-trip' && (
-            <div className="w-1/2 pl-2">
-              <label className="block mb-2 text-gray-700">Return Date:</label>
-              <input
-                type="date"
-                name="returnDate"
-                value={formData.returnDate}
-                onChange={handleInputChange}
-                required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          )}
-        </div>
-        <div className="mb-6">
-          <label className="block mb-2 text-gray-700">Passengers:</label>
-          <input
-            type="number"
-            name="passengers"
-            value={formData.passengers}
-            onChange={handleInputChange}
-            min="1"
-            required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block mb-2 text-gray-700">Class:</label>
-          <select
-            name="travelClass"
-            value={formData.travelClass}
-            onChange={handleInputChange}
-            required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="economy">Economy</option>
-            <option value="business">Business</option>
-            <option value="first">First Class</option>
-          </select>
-        </div>
+        <input
+          type="text"
+          name="from"
+          value={formData.from}
+          onChange={handleInputChange}
+          placeholder="From (IATA Code, e.g., JFK)"
+          className="w-full p-3 mb-4 border rounded-lg"
+          required
+        />
+        <input
+          type="text"
+          name="to"
+          value={formData.to}
+          onChange={handleInputChange}
+          placeholder="To (IATA Code, e.g., LAX)"
+          className="w-full p-3 mb-4 border rounded-lg"
+          required
+        />
+        <input
+          type="date"
+          name="departureDate"
+          value={formData.departureDate}
+          onChange={handleInputChange}
+          className="w-full p-3 mb-4 border rounded-lg"
+          required
+        />
         <button
           type="submit"
-          className="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 bg-blue-500 text-white rounded-lg"
         >
           Search Flights
         </button>
       </form>
+
+      {loading && <p className="text-center mt-4">Loading flights...</p>}
+      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+
+      <div className="mt-6">
+        {flights.length > 0 && (
+          <h2 className="text-xl font-semibold mb-4">Available Flights</h2>
+        )}
+        {flights.map((flight, index) => (
+          <div key={index} className="border p-4 rounded-lg shadow mb-4">
+            <p>
+              <strong>Airline:</strong> {flight.airline.name} ({flight.airline.iata})
+            </p>
+            <p>
+              <strong>Flight Number:</strong> {flight.flight.iata}
+            </p>
+            <p>
+              <strong>Departure:</strong> {flight.departure.airport} (
+              {flight.departure.iata}) at {new Date(flight.departure.scheduled).toLocaleTimeString()}
+            </p>
+            <p>
+              <strong>Arrival:</strong> {flight.arrival.airport} (
+              {flight.arrival.iata}) at {new Date(flight.arrival.scheduled).toLocaleTimeString()}
+            </p>
+            <p>
+              <strong>Status:</strong> {flight.flight_status}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

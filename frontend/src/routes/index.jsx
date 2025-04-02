@@ -16,9 +16,18 @@ import MostBooking from '../pages/MostBooking';
 import Trending from '../pages/Trending';
 import ExistingTrip from '../pages/ExistingTrip';
 import Coins from '../pages/Coins';
-import Admind from '../pages/dashboard/Admind';
-import Userd from '../pages/dashboard/Userd';
+import Admin from '../pages/dashboard/Admind';
+import User from '../pages/dashboard/Userd';
+import Agency from '../pages/dashboard/Agencyd';
 
+// Import sidebar components
+import MyProfile from '../pages/user_panel/my_profile';
+import MyBookings from '../pages/user_panel/my_bookings';
+import Wishlist from '../pages/user_panel/wishlist';
+import Rewards from '../pages/user_panel/rewards';
+import EcoZone from '../pages/user_panel/eco_zone';
+import Support from '../pages/user_panel/support';
+import Settings from '../pages/user_panel/settings';
 
 const router = createBrowserRouter([
   {
@@ -42,8 +51,18 @@ const router = createBrowserRouter([
       { path: 'most-booking', element: <MostBooking /> },
       { path: 'trending', element: <Trending /> },
       { path: 'existing-trip', element: <ExistingTrip /> },
-      { path: 'admin', element: <Admind /> },
-      { path: 'userd', element: <Userd /> },
+      { path: 'admin', element: <Admin /> },
+      { path: 'user', element: <User /> },
+      { path: 'agency', element: <Agency /> },
+
+      // Sidebar paths
+      { path: 'userd/myprofile', element: <MyProfile /> },
+      { path: 'userd/mybookings', element: <MyBookings /> },
+      { path: 'userd/wishlist', element: <Wishlist /> },
+      { path: 'userd/rewards', element: <Rewards /> },
+      { path: 'userd/ecozone', element: <EcoZone /> },
+      { path: 'userd/support', element: <Support /> },
+      { path: 'userd/settings', element: <Settings /> },
     ],
   },
 ]);
