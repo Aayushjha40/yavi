@@ -1,13 +1,3 @@
-// import React from 'react'
-
-// const reward = () => {
-//   return (
-//     <div>reward</div>
-//   )
-// }
-
-// export default reward
-
 import React, { useState } from 'react';
 import { Clock, Coins, X, Footprints, RecycleIcon, Users, MapPin, Calendar } from 'lucide-react';
 
