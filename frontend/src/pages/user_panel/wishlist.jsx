@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Heart, MapPin, Star, Calendar, Search, Filter, Share2, Trash2 } from 'lucide-react';
+import Navbar from './navbar';
 
 export default function Wishlist() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -57,7 +58,8 @@ export default function Wishlist() {
     return matchesSearch && matchesPrice;
   });
 
-  return (
+  return (<>
+  <Navbar/>
     <div className="max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Wishlist</h1>
@@ -165,5 +167,5 @@ export default function Wishlist() {
         ))}
       </div>
     </div>
-  );
+  </>);
 }
