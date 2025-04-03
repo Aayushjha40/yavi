@@ -13,6 +13,7 @@ import {
   Bell,
   Moon,
   Sun,
+  Home,
   User,
 } from 'lucide-react';
 
@@ -26,6 +27,7 @@ import Analytics from '../admin_panel/analystics';
 import AdminSettings from '../admin_panel/settings';
 
 const menuItems = [
+  { name: 'Dashboard', icon: Home },
   { name: 'Users', icon: UsersIcon, component: Users },
   { name: 'Add Trip', icon: CarTaxiFront, component: AddTrips },
   { name: 'Rewards', icon: Award, component: Rewards },
@@ -84,7 +86,9 @@ function Sidebar({ isOpen, toggleSidebar, setActiveItem, activeItem }) {
 }
 
 function Content({ activeItem }) {
-  const ActiveComponent = menuItems.find((item) => item.name === activeItem)?.component || (() => <p>Select a section</p>);
+  const ActiveComponent =
+    menuItems.find((item) => item.name === activeItem)?.component ||
+    (() => <p>Select a section</p>);
   return (
     <div className="flex-1 p-7">
       <div className="bg-white rounded-lg shadow-md p-6">
@@ -109,7 +113,12 @@ function Dashboard() {
     <div className="h-screen flex bg-gray-100 dark:bg-gray-900 overflow-hidden">
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <div className="flex pt-16 w-full">
-        <Sidebar isOpen={isOpen} toggleSidebar={() => setIsOpen(!isOpen)} setActiveItem={setActiveItem} activeItem={activeItem} />
+        <Sidebar
+          isOpen={isOpen}
+          toggleSidebar={() => setIsOpen(!isOpen)}
+          setActiveItem={setActiveItem}
+          activeItem={activeItem}
+        />
         <Content activeItem={activeItem} />
       </div>
     </div>
