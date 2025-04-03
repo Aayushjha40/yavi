@@ -1,12 +1,11 @@
+const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
-const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectToDb = require('./config/db');
 const userRoutes = require('./routes/user.routes');
 const uploadRoutes = require('./routes/upload.routes');
-
 
 const app = express();
 
@@ -30,13 +29,8 @@ app.use(cors(corsOptions));
 // Handle preflight requests
 app.options('*', cors(corsOptions));
 
-
-app.get('/', (req, res) => {
-  res.send("Hello World");
-});
-
+// Routes
 app.use('/api', uploadRoutes);
-
 app.use('/api/users', userRoutes);
 
 const port = process.env.PORT || 4000;

@@ -33,6 +33,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  coin: {
+    type: Number,
+    default: 0,
+  },
+  upload_image: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Upload",
+          required: true
+      },
+
 }, { timestamps: true });
 
 userSchema.methods.generateAuthToken = function () {

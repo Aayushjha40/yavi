@@ -12,28 +12,29 @@ const EcoFriendlyZone = () => {
   // Updated handleImageUpload function
   const handleImageUpload = async (event, categoryName) => {
     const file = event.target.files[0];
-    if (!file) return;
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file); // Field name must match 'file'
+      formData.append('category', categoryName); // Optional category
   
-    const formData = new FormData();
-    formData.append('file', file);
+      try {
+        const response = await fetch('http://localhost:4000/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
   
-    try {
-      const response = await fetch('http://localhost:4000/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.text(); // Capture error response
-        throw new Error(`Upload failed: ${errorData}`);
+        const data = await response.json();
+        if (response.ok) {
+          console.log('File uploaded successfully:', data.url);
+        } else {
+          console.error('Upload failed:', data.message);
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
       }
-  
-      const data = await response.json(); // Ensure JSON response
-      setUploadedImages((prev) => ({ ...prev, [categoryName]: data.url }));
-    } catch (error) {
-      console.error('Error uploading file:', error);
     }
   };
+  
   
   const triggerFileUpload = (categoryName) => {
     if (fileInputRefs.current[categoryName]) {
