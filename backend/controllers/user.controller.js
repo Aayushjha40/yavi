@@ -71,8 +71,6 @@ module.exports.getUserProfile = async (req, res, next) => {
 
 module.exports.logoutUser = async (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
-  console.log('Received token for logout:', token);
-
   try {
     if (token) {
       console.log('Checking if token is blacklisted...');

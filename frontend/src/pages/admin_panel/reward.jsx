@@ -1,4 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Clock,
   Coins,
@@ -6,10 +8,6 @@ import {
   Footprints,
   RecycleIcon,
   Users,
-  MapPin,
-  Calendar,
-  Play,
-  Pause,
 } from "lucide-react";
 
 // Mock data for demonstration
@@ -43,8 +41,10 @@ const categories = [
     description: "Track and reduce carbon emissions",
     image:
       "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=800",
-    media:
-      "https://www.w3schools.com/html/mov_bbb.mp4", // Sample video
+    media: {
+      type: "video",
+      src: "https://www.w3schools.com/html/mov_bbb.mp4", // Sample video
+    },
   },
   {
     name: "Recycle",
@@ -52,8 +52,10 @@ const categories = [
     description: "Promote recycling initiatives",
     image:
       "https://images.unsplash.com/photo-1604187351574-c75ca79f5807?w=800",
-    media:
-      "https://www.w3schools.com/html/mov_bbb.mp4",
+    media: {
+      type: "image",
+      src: "https://images.unsplash.com/photo-1604187351574-c75ca79f5807?w=800",
+    },
   },
   {
     name: "Engage",
@@ -61,14 +63,18 @@ const categories = [
     description: "Community engagement activities",
     image:
       "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800",
-    media:
-      "https://www.w3schools.com/html/mov_bbb.mp4",
+    media: {
+      type: "video",
+      src: "https://www.w3schools.com/html/mov_bbb.mp4",
+    },
   },
 ];
+
 
 function RewardModal({ isOpen, onClose, notification }) {
   const [coins, setCoins] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(notification.category);
+  const [mediaPopup, setMediaPopup] = useState({ isOpen: false, media: null }); // State for media popup
 
   const category = categories.find((cat) => cat.name === selectedCategory);
 
@@ -81,9 +87,31 @@ function RewardModal({ isOpen, onClose, notification }) {
     onClose();
   };
 
+  const openMediaPopup = (media) => {
+    setMediaPopup({ isOpen: true, media });
+  };
+
+  const closeMediaPopup = () => {
+    setMediaPopup({ isOpen: false, media: null });
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-2xl p-6 max-w-4xl w-full overflow-y-auto max-h-[90vh]">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+      onClick={onClose} // Close modal when clicking outside the modal content
+    >
+      <div
+        className="bg-white rounded-xl shadow-2xl p-6 max-w-4xl w-full overflow-y-auto max-h-[90vh] relative"
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition-colors"
+        >
+          <X size={24} />
+        </button>
+
         <div className="flex justify-between items-center mb-6">
           <div>
             <h2 className="text-2xl font-bold">Give Reward</h2>
@@ -91,12 +119,6 @@ function RewardModal({ isOpen, onClose, notification }) {
               Select a category and assign coins
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition-colors"
-          >
-            <X size={22} />
-          </button>
         </div>
 
         <div className="grid grid-cols-[1.2fr,1.8fr] gap-6">
@@ -149,7 +171,7 @@ function RewardModal({ isOpen, onClose, notification }) {
                 return (
                   <button
                     key={category.name}
-                    onClick={() => setSelectedCategory(category.name)}
+                    onClick={() => openMediaPopup(category.media)} // Open media popup on click
                     className={`relative overflow-hidden rounded-xl transition-all ${
                       isSelected
                         ? "ring-3 ring-green-500"
@@ -181,10 +203,41 @@ function RewardModal({ isOpen, onClose, notification }) {
           </div>
         </div>
       </div>
+
+      {/* Media Popup */}
+      {mediaPopup.isOpen && (
+  <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+    <div className="bg-white rounded-lg p-6 max-w-3xl w-full relative">
+      {/* Close Button */}
+      <button
+        onClick={() => {
+          closeMediaPopup(); // Close the media popup
+        }}
+        className="absolute top-4 right-4 text-black hover:text-gray-700 bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition-colors"
+      >
+        <X size={24} />
+      </button>
+
+      {/* Media Content */}
+      {mediaPopup.media.type === "video" ? (
+        <video
+          src={mediaPopup.media.src}
+          controls
+          className="w-full rounded-lg"
+        />
+      ) : (
+        <img
+          src={mediaPopup.media.src}
+          alt="Media"
+          className="w-full rounded-lg"
+        />
+      )}
+    </div>
+  </div>
+)}
     </div>
   );
 }
-
 function NotificationCard({ notification, onReward }) {
   const formatTime = (dateString) => {
     const date = new Date(dateString);
