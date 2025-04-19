@@ -71,68 +71,27 @@ function Dashboard() {
 
 function Sidebar({ isOpen, toggleSidebar, setActiveItem, activeItem }) {
   return (
-    <div
-      className={`${
-        isOpen ? 'w-64' : 'w-20'
-      } bg-white dark:bg-gray-800 h-screen p-5 pt-8 relative duration-300 shadow-lg`}
-    >
-      <div
-        className="absolute cursor-pointer -right-3 top-9 w-8 h-8 bg-white dark:bg-gray-800 border-2 rounded-full flex items-center justify-center shadow-md hover:bg-gray-200 dark:hover:bg-gray-700"
-        onClick={toggleSidebar}
-      >
-        <Menu size={22} className="text-gray-700 dark:text-gray-300" />
+    <div className={`h-screen bg-white dark:bg-gray-800 shadow-lg flex flex-col transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
+      <div className="flex items-center justify-between px-4 py-3">
+        <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700" onClick={toggleSidebar}>
+          <Menu className="w-6 h-6 text-gray-700 dark:text-white" />
+        </button>
       </div>
-      <h1
-        className={`text-xl font-medium text-gray-800 dark:text-gray-300 origin-left duration-300 ${
-          !isOpen && 'scale-0'
-        }`}
-      >
-        Admin Panel
-      </h1>
-      <ul className="pt-6">
+      <ul className="flex-1 overflow-y-auto space-y-2">
         {menuItems.map((item) => (
           <li
             key={item.name}
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm items-center gap-x-4 mt-2 ${
-              activeItem === item.name
-                ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400'
-                : ''
-            }`}
+            className={`flex items-center gap-x-4 p-2 cursor-pointer rounded-md text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 ${activeItem === item.name ? 'bg-gray-200 dark:bg-gray-700 text-blue-600' : ''}`}
             onClick={() => setActiveItem(item.name)}
           >
-            <item.icon size={20} />
-            <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>
-              {item.name}
-            </span>
+            <item.icon size={22} />
+            {isOpen && <span>{item.name}</span>}
           </li>
         ))}
       </ul>
-      <div className="absolute bottom-4 flex rounded-md p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm items-center gap-x-4">
-        <LogOut size={20} />
-        <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>
-          Logout
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function Header({ toggleDarkMode, darkMode, toggleSidebar }) {
-  return (
-    <div className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow-md">
-      <div onClick={toggleSidebar}>
-        <Menu className="cursor-pointer text-gray-700 dark:text-gray-300" size={24} />
-      </div>
-      <div className="flex items-center space-x-4">
-        <Bell className="cursor-pointer text-gray-700 dark:text-gray-300" size={24} />
-        <button onClick={toggleDarkMode}>
-          {darkMode ? (
-            <Sun className="text-yellow-500" size={24} />
-          ) : (
-            <Moon className="text-gray-700 dark:text-gray-300" size={24} />
-          )}
-        </button>
-        <User className="cursor-pointer text-gray-700 dark:text-gray-300" size={24} />
+      <div className="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-white flex items-center gap-x-4">
+        <LogOut size={22} />
+        {isOpen && <span>Logout</span>}
       </div>
     </div>
   );
@@ -144,11 +103,35 @@ function Content({ activeItem }) {
     (() => <p>Select a section</p>);
   return (
     <div className="flex-1 p-7">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-300 mb-4">
-          {activeItem}
-        </h2>
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">{activeItem}</h2>
         <ActiveComponent />
+      </div>
+    </div>
+  );
+}
+
+function Dashboard() {
+  const [isOpen, setIsOpen] = useState(true);
+  const [activeItem, setActiveItem] = useState('Users');
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.documentElement.classList.toggle('dark');
+  };
+
+  return (
+    <div className="h-screen flex bg-gray-100 dark:bg-gray-900 overflow-hidden">
+      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <div className="flex pt-16 w-full">
+        <Sidebar
+          isOpen={isOpen}
+          toggleSidebar={() => setIsOpen(!isOpen)}
+          setActiveItem={setActiveItem}
+          activeItem={activeItem}
+        />
+        <Content activeItem={activeItem} />
       </div>
     </div>
   );
