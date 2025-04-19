@@ -38,34 +38,22 @@ const menuItems = [
   { name: 'Settings', icon: SettingsIcon, component: AdminSettings },
 ];
 
-function Dashboard() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [activeItem, setActiveItem] = useState('Dashboard');
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleDarkMode = () => setDarkMode(!darkMode);
-
+function Navbar({ darkMode, toggleDarkMode }) {
   return (
-    <div
-      className={`${
-        darkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-100'
-      } flex h-screen`}
-    >
-      <Sidebar
-        isOpen={isOpen}
-        toggleSidebar={() => setIsOpen(!isOpen)}
-        setActiveItem={setActiveItem}
-        activeItem={activeItem}
-      />
-      <div className="flex flex-col flex-1">
-        <Header
-          toggleDarkMode={toggleDarkMode}
-          darkMode={darkMode}
-          toggleSidebar={() => setIsOpen(!isOpen)}
-        />
-        <Content activeItem={activeItem} />
+    <nav className="w-full bg-white dark:bg-gray-900 shadow-md fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-6 py-4">
+      <h1 className="text-lg font-semibold dark:text-white">Admin Panel</h1>
+      <div className="flex items-center space-x-4">
+        <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800">
+          <Bell className="w-6 h-6 text-gray-700 dark:text-white" />
+        </button>
+        <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800" onClick={toggleDarkMode}>
+          {darkMode ? <Sun className="w-6 h-6 text-yellow-500" /> : <Moon className="w-6 h-6 text-gray-700 dark:text-white" />}
+        </button>
+        <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800">
+          <User className="w-6 h-6 text-gray-700 dark:text-white" />
+        </button>
       </div>
-    </div>
+    </nav>
   );
 }
 

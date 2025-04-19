@@ -18,20 +18,16 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
   number: {
-    type: String,
-    required: true,
+    type: String
   },
   address: {
-    type: String,
-    required: true,
+    type: String
   },
   DOB: {
-    type: Date,
-    required: true,
+    type: Date
   },
   nationality: {
-    type: String,
-    required: true,
+    type: String
   },
   coin: {
     type: Number,
@@ -39,8 +35,7 @@ const userSchema = new mongoose.Schema({
   },
   upload_image: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Upload",
-          required: true
+          ref: "Upload"
       },
 
 }, { timestamps: true });

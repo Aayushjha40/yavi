@@ -2,9 +2,24 @@ import React from 'react';
 import { LogOut } from 'lucide-react';
 
 export default function Logout() {
-  const handleLogout = () => {
-    // Add logout logic here
-    console.log('Logging out...');
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/api/users/logout', {
+        method: 'POST',
+        credentials: 'include', // Include cookies in the request
+      });
+  
+      if (response.ok) {
+        // Clear user data and token from context/local storage
+        setUser(null);
+        localStorage.removeItem('token');
+        navigate('/login'); // Redirect to login page
+      } else {
+        console.error('Failed to log out:', await response.json());
+      }
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   };
 
   return (

@@ -7,35 +7,46 @@ import naturebg from "../../assets/naturewb.jpg";
 const EcoFriendlyZone = () => {
   const [uploadedImages, setUploadedImages] = useState({});
   const [showThankYou, setShowThankYou] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRefs = useRef({});
 
-  // Updated handleImageUpload function
   const handleImageUpload = async (event, categoryName) => {
     const file = event.target.files[0];
     if (file) {
       const formData = new FormData();
-      formData.append('file', file); // Field name must match 'file'
-      formData.append('category', categoryName); // Optional category
-  
+      formData.append("file", file);
+      formData.append("category", categoryName);
+
+      setIsLoading(true);
+
       try {
-        const response = await fetch('http://localhost:4000/api/upload', {
-          method: 'POST',
+        const response = await fetch("http://localhost:4000/api/upload", {
+          method: "POST",
           body: formData,
         });
-  
+
         const data = await response.json();
         if (response.ok) {
-          console.log('File uploaded successfully:', data.url);
+          const fileType = file.type.startsWith("video") ? "video" : "image";
+
+          setUploadedImages((prev) => ({
+            ...prev,
+            [categoryName]: {
+              url: data.url,
+              type: fileType,
+            },
+          }));
         } else {
-          console.error('Upload failed:', data.message);
+          console.error("Upload failed:", data.message);
         }
       } catch (error) {
-        console.error('Error uploading file:', error);
+        console.error("Error uploading file:", error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
-  
-  
+
   const triggerFileUpload = (categoryName) => {
     if (fileInputRefs.current[categoryName]) {
       fileInputRefs.current[categoryName].click();
@@ -47,19 +58,26 @@ const EcoFriendlyZone = () => {
   };
 
   const handleWelcomeClick = () => {
-    window.location.reload(); // Refresh the page
+    window.location.reload();
   };
 
   const isSubmitEnabled = Object.keys(uploadedImages).length > 0;
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center flex justify-center items-center"
+      className="min-h-screen bg-cover bg-center flex justify-center items-center relative"
       style={{ backgroundImage: `url(${naturebg})` }}
     >
-      {/* Thank You Message */}
+      {/* Full-screen Loader */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+          <div className="w-16 h-16 border-4 border-t-4 border-white border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+
+        </div>
+      )}
+
       {showThankYou ? (
-        <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+        <div className="bg-white p-6 rounded-lg shadow-lg text-center z-10">
           <h2 className="text-2xl font-bold text-green-600">Thank You!</h2>
           <p className="text-gray-600 mt-2">
             Your files have been submitted successfully. 🎉
@@ -92,19 +110,30 @@ const EcoFriendlyZone = () => {
                 key={index}
                 className="h-80 w-52 border-4 border-[#4fb5c5] bg-black bg-opacity-50 rounded-lg flex flex-col items-center p-4 m-2 relative overflow-hidden"
               >
-                {/* Background Image with Dark Overlay */}
+                {/* Uploaded Media as Background */}
                 {uploadedImages[category.name] && (
-                  <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{
-                      backgroundImage: `url(${uploadedImages[category.name]})`,
-                      filter: "brightness(50%)",
-                    }}
-                  ></div>
+                  <div className="absolute inset-0 z-0">
+                    {uploadedImages[category.name].type === "video" ? (
+                      <video
+                        src={uploadedImages[category.name].url}
+                        className="w-full h-full object-cover"
+                        muted
+                        autoPlay
+                        loop
+                      />
+                    ) : (
+                      <div
+                        className="absolute inset-0 bg-cover bg-center"
+                        style={{
+                          backgroundImage: `url(${uploadedImages[category.name].url})`,
+                          filter: "brightness(50%)",
+                        }}
+                      />
+                    )}
+                  </div>
                 )}
 
                 <div className="relative z-10 flex flex-col flex-grow w-full">
-                  {/* Title and Icon */}
                   {!uploadedImages[category.name] && (
                     <div className="flex flex-col items-center">
                       <h3 className="text-white text-lg mb-2">
@@ -118,20 +147,18 @@ const EcoFriendlyZone = () => {
                     </div>
                   )}
 
-                  {/* Spacer to push the button to the bottom */}
                   <div className="flex-grow"></div>
 
-                  {/* Hidden File Input */}
                   <input
                     type="file"
                     className="hidden"
+                    accept="image/*,video/*"
                     ref={(el) => (fileInputRefs.current[category.name] = el)}
                     onChange={(event) =>
                       handleImageUpload(event, category.name)
                     }
                   />
 
-                  {/* Upload Button */}
                   <button
                     className="p-2 bg-[#4fb5c5] text-white font-bold rounded-md w-full mt-1"
                     onClick={() => triggerFileUpload(category.name)}
@@ -143,7 +170,6 @@ const EcoFriendlyZone = () => {
             ))}
           </div>
 
-          {/* Submit Button */}
           <div className="flex justify-center mt-6">
             <button
               className={`p-3 text-white font-bold rounded-lg w-40 transition-all ${
