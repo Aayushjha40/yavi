@@ -1,9 +1,13 @@
 import React from 'react';
 import { Leaf, TreePine, Cloud } from 'lucide-react';
+import Navbar from './navbar'; // Import Navbar
 
 export default function EcoZone() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Navbar */}
+      <Navbar /> {/* Add Navbar */}
+
       {/* Main Content */}
       <main className="flex-1 p-8">
         <div className="max-w-4xl mx-auto">

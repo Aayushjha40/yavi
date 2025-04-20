@@ -1,8 +1,10 @@
 import React from 'react';
 import { Bell, Lock, Globe, CreditCard } from 'lucide-react';
+import Navbar from './navbar';
 
 export default function Settings() {
   return (
+    <><Navbar/>
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-8">Settings</h1>
       
@@ -68,5 +70,5 @@ export default function Settings() {
         </div>
       </div>
     </div>
-  );
+    </> );
 }

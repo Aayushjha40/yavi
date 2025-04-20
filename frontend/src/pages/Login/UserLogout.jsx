@@ -10,23 +10,33 @@ const UserLogout = () => {
   useEffect(() => {
     const logout = async () => {
       try {
-        await axios.post(`${import.meta.env.VITE_BASE_URL}/api/users/logout`, {}, {
-          withCredentials: true
+        const response = await fetch('http://localhost:4000/api/users/logout', {
+          method: 'POST',
+          credentials: 'include', // Include cookies in the request
         });
-        localStorage.removeItem('token');
-        setUser(null);
-        navigate('/LoginForUser');
+
+        if (response.ok) {
+          // Clear user data and token from context/local storage
+          setUser(null);
+          localStorage.removeItem('token');
+          navigate('/LoginForUser'); // Redirect to login page
+        } else {
+          const errorData = await response.json();
+          console.error('Failed to log out:', errorData);
+          alert('Failed to log out. Please try again.');
+        }
       } catch (error) {
         console.error('Error logging out:', error);
+        alert('An error occurred while logging out. Please try again.');
       }
     };
 
     logout();
   }, [navigate, setUser]);
 
-  return (
-    <div>Logging out...</div>
-  );
+  return <div>Logging out...</div>;
 };
+
+
 
 export default UserLogout;

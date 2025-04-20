@@ -1,45 +1,46 @@
 const multer = require('multer');
 const cloudinary = require('../config/cloudinary.config');
-const path = require('path');
-const fs = require('fs');
-
-// Ensure uploads directory exists
-const uploadDir = 'uploads/';
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-
-// Multer Storage - Saves files temporarily before uploading to Cloudinary
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ storage });
+const Upload = require('../models/Upload'); // Import the Upload model
 
 const uploadFile = async (req, res) => {
   try {
-    if (!req.file) {
+    const file = req.file;
+
+    if (!file) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
-    // Upload to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'eco_friendly_zone'
-    });
 
-    // Delete temp file after upload
-    fs.unlinkSync(req.file.path);
+    // Check file type (image or video)
+    const fileType = file.mimetype.startsWith('image') ? 'image' : 'video';
 
-    res.status(200).json({ message: 'File uploaded successfully', url: result.secure_url });
+    // Upload file to Cloudinary
+    cloudinary.uploader.upload_stream(
+      {
+        folder: 'eco_friendly_zone',
+        resource_type: fileType, // Automatically detect resource type
+      },
+      async (error, result) => {
+        if (error) {
+          console.error('Cloudinary Error:', error);
+          return res.status(500).json({ message: 'Cloudinary upload failed', error });
+        }
 
+        // Save file details to MongoDB
+        const newUpload = new Upload({
+          fileName: file.originalname,
+          fileUrl: result.secure_url, // Store the Cloudinary URL
+          category: req.body.category || 'Uncategorized', // Optional category
+        });
+
+        await newUpload.save();
+
+        res.status(201).json({ message: 'File uploaded successfully', url: result.secure_url });
+      }
+    ).end(file.buffer);
   } catch (error) {
-    console.error('Upload Error:', error);
+    console.error('Error uploading file:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-module.exports = { upload, uploadFile };
+module.exports = { uploadFile };

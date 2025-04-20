@@ -19,6 +19,7 @@ import Coins from '../pages/Coins';
 import Admin from '../pages/dashboard/Admind';
 import User from '../pages/dashboard/Userd';
 import Agency from '../pages/dashboard/Agencyd';
+import ParentComponent from "../pages/ParentComponent";
 
 // Import sidebar components
 import MyProfile from '../pages/user_panel/my_profile';
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
       { path: 'admin', element: <Admin /> },
       { path: 'user', element: <User /> },
       { path: 'agency', element: <Agency /> },
+      { path: 'ecoZone', element: <ParentComponent /> },
 
       // Sidebar paths
       { path: 'userd/myprofile', element: <MyProfile /> },

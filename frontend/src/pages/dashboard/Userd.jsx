@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Home, Compass, ClipboardList, Gift, BarChart, LifeBuoy, Settings as SettingsIcon, LogOut
+  Home, Compass, ClipboardList, Gift, BarChart, LifeBuoy, Settings as SettingsIcon, LogOut, Bell, Moon, Sun, User
 } from 'lucide-react';
 
 import MyProfile from '../user_panel/my_profile.jsx';
@@ -12,44 +12,77 @@ import Support from '../user_panel/support.jsx';
 import Settings from '../user_panel/settings.jsx';
 import Logout from '../user_panel/logout.jsx';
 
-function App() {
-  const [activeSection, setActiveSection] = useState('myprofile');
+function Navbar({ darkMode, toggleDarkMode }) {
+  return (
+    <nav className="w-full bg-white dark:bg-gray-900 shadow-md fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-6 py-4">
+      <h1 className="text-lg font-semibold dark:text-white">User Panel</h1>
+      <div className="flex items-center space-x-4">
+        <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800">
+          <Bell className="w-6 h-6 text-gray-700 dark:text-white" />
+        </button>
+        <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800" onClick={toggleDarkMode}>
+          {darkMode ? <Sun className="w-6 h-6 text-yellow-500" /> : <Moon className="w-6 h-6 text-gray-700 dark:text-white" />}
+        </button>
+        <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800">
+          <User className="w-6 h-6 text-gray-700 dark:text-white" />
+        </button>
+      </div>
+    </nav>
+  );
+}
 
+function Sidebar({ activeSection, setActiveSection }) {
   const menuItems = [
-    { id: 'myprofile', label: 'My Profile', icon: <Home className="h-5 w-5" />, component: <MyProfile /> },
-    { id: 'mybookings', label: 'My Bookings', icon: <Compass className="h-5 w-5" />, component: <MyBookings /> },
-    { id: 'wishlist', label: 'Wishlist', icon: <ClipboardList className="h-5 w-5" />, component: <Wishlist /> },
-    { id: 'rewards', label: 'Rewards', icon: <Gift className="h-5 w-5" />, component: <Rewards /> },
-    { id: 'ecozone', label: 'Eco Zone', icon: <BarChart className="h-5 w-5" />, component: <EcoZone /> },
-    { id: 'support', label: 'Support', icon: <LifeBuoy className="h-5 w-5" />, component: <Support /> },
-    { id: 'settings', label: 'Settings', icon: <SettingsIcon className="h-5 w-5" />, component: <Settings /> },
-    { id: 'logout', label: 'Log out', icon: <LogOut className="h-5 w-5" />, component: <Logout /> },
+    { id: 'myprofile', label: 'My Profile', icon: <Home className="h-5 w-5" /> },
+    { id: 'mybookings', label: 'My Bookings', icon: <Compass className="h-5 w-5" /> },
+    { id: 'wishlist', label: 'Wishlist', icon: <ClipboardList className="h-5 w-5" /> },
+    { id: 'rewards', label: 'Rewards', icon: <Gift className="h-5 w-5" /> },
+    { id: 'ecozone', label: 'Eco Zone', icon: <BarChart className="h-5 w-5" /> },
+    { id: 'support', label: 'Support', icon: <LifeBuoy className="h-5 w-5" /> },
+    { id: 'settings', label: 'Settings', icon: <SettingsIcon className="h-5 w-5" /> },
+    { id: 'logout', label: 'Log out', icon: <LogOut className="h-5 w-5" /> },
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar Navigation */}
-      <aside className="w-64 bg-white shadow-md p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">User Panel</h2>
-        <nav className="space-y-4">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveSection(item.id)}
-              className={`flex items-center w-full p-3 rounded-lg text-left transition-colors ${
-                activeSection === item.id ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              {item.icon}
-              <span className="ml-3">{item.label}</span>
-            </button>
-          ))}
-        </nav>
-      </aside>
+    <aside className="w-64 bg-white dark:bg-gray-800 shadow-md p-6 mt-16 h-screen">
+      <nav className="space-y-4">
+        {menuItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => setActiveSection(item.id)}
+            className={`flex items-center w-full p-3 rounded-lg text-left transition-colors ${
+              activeSection === item.id ? 'bg-blue-600 text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+            }`}
+          >
+            {item.icon}
+            <span className="ml-3">{item.label}</span>
+          </button>
+        ))}
+      </nav>
+    </aside>
+  );
+}
 
-      {/* Main Content */}
-      <main className="flex-1 p-8">
-        {menuItems.find(item => item.id === activeSection)?.component}
+function App() {
+  const [activeSection, setActiveSection] = useState('myprofile');
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.documentElement.classList.toggle('dark');
+  };
+
+  const components = {
+    myprofile: <MyProfile />, mybookings: <MyBookings />, wishlist: <Wishlist />, rewards: <Rewards />,
+    ecozone: <EcoZone />, support: <Support />, settings: <Settings />, logout: <Logout />
+  };
+
+  return (
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+      <main className="flex-1 p-8 mt-16">
+        {components[activeSection]}
       </main>
     </div>
   );

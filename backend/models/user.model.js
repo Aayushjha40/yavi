@@ -18,21 +18,26 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
   number: {
-    type: String,
-    required: true,
+    type: String
   },
   address: {
-    type: String,
-    required: true,
+    type: String
   },
   DOB: {
-    type: Date,
-    required: true,
+    type: Date
   },
   nationality: {
-    type: String,
-    required: true,
+    type: String
   },
+  coin: {
+    type: Number,
+    default: 0,
+  },
+  upload_image: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Upload"
+      },
+
 }, { timestamps: true });
 
 userSchema.methods.generateAuthToken = function () {

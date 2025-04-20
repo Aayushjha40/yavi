@@ -23,7 +23,7 @@ import Analytics from '../agency_panel/analystics';
 import AdminSettings from '../agency_panel/setting';
 
 const menuItems = [
-  { name: 'Dashboard', icon: Home },
+  { name: 'Dashboard', icon: Home, },
   { name: 'Profile', icon: UsersIcon, component: Profile },
   { name: 'Create Trips', icon: CarTaxiFront, component: CreateTrips },
   { name: 'Ads', icon: MessageSquare, component: Ads },
@@ -37,14 +37,8 @@ function Sidebar({ isOpen, toggleSidebar, setActiveItem, activeItem }) {
     <div
       className={`${
         isOpen ? 'w-64' : 'w-20'
-      } bg-white dark:bg-gray-800 h-screen p-5 pt-8 relative duration-300 shadow-lg`}
+      } bg-white dark:bg-gray-800 h-screen p-5 pt-8 relative duration-300 shadow-lg overflow-y-auto`}
     >
-      {/* <div
-        className="absolute cursor-pointer -right-3 top-9 w-8 h-8 bg-white dark:bg-gray-800 border-2 rounded-full flex items-center justify-center shadow-md hover:bg-gray-200 dark:hover:bg-gray-700"
-        onClick={toggleSidebar}
-      >
-        <Menu size={22} className="text-gray-700 dark:text-gray-300" />
-      </div> */}
       <h1
         className={`text-xl font-medium text-gray-800 dark:text-gray-300 origin-left duration-300 ${
           !isOpen && 'scale-0'
@@ -106,11 +100,8 @@ function Content({ activeItem }) {
     menuItems.find((item) => item.name === activeItem)?.component ||
     (() => <p>Select a section</p>);
   return (
-    <div className="flex-1 p-7">
+    <div className="flex-1 p-7 overflow-y-auto">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-300 mb-4">
-          {activeItem}
-        </h2>
         <ActiveComponent />
       </div>
     </div>
@@ -128,7 +119,7 @@ function Dashboard() {
     <div
       className={`${
         darkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-100'
-      } flex h-screen`}
+      } flex h-screen overflow-hidden`}
     >
       <Sidebar
         isOpen={isOpen}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, MapPin, Phone, Mail, Calendar, Briefcase, Globe, Camera, Edit } from 'lucide-react';
+import Navbar from './navbar';
 
 export default function MyProfile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -17,7 +18,8 @@ export default function MyProfile() {
     profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?fit=crop&w=300&h=300'
   });
 
-  return (
+  return ( <>
+    <Navbar/>
     <div className="max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">My Profile</h1>
@@ -212,5 +214,5 @@ export default function MyProfile() {
         </div>
       </div>
     </div>
-  );
+    </>);
 }

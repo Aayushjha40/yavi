@@ -1,8 +1,10 @@
 import React from 'react';
 import { MessageSquare, Phone, Mail } from 'lucide-react';
+import Navbar from './navbar';
 
 export default function Support() {
   return (
+    <> <Navbar/>
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-8">Support</h1>
       
@@ -53,5 +55,5 @@ export default function Support() {
         </div>
       </div>
     </div>
-  );
+  </>);
 }

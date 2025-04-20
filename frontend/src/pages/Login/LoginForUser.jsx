@@ -95,11 +95,11 @@ const LoginForUser = () => {
                 className="flex items-center gap-2 border border-red-500 text-red-600 px-4 py-2 rounded-lg hover:bg-red-50 transition"
                 onClick={() => console.log('Login with Google')}
               >
-                <img 
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png" 
-        alt="Google" 
-        className="w-5 h-5"
-      />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+                  alt="Google"
+                  className="w-5 h-5"
+                />
                 Google
               </button>
 
