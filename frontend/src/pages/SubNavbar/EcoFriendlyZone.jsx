@@ -16,19 +16,25 @@ const EcoFriendlyZone = () => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("category", categoryName);
-
+  
       setIsLoading(true);
-
+  
       try {
+        // Retrieve the token from localStorage
+        const token = localStorage.getItem("token");
+  
         const response = await fetch("http://localhost:4000/api/upload", {
           method: "POST",
           body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
         });
-
+  
         const data = await response.json();
         if (response.ok) {
           const fileType = file.type.startsWith("video") ? "video" : "image";
-
+  
           setUploadedImages((prev) => ({
             ...prev,
             [categoryName]: {

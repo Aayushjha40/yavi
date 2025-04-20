@@ -33,10 +33,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  upload_image: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Upload"
-      },
+  uploads: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Upload' }],  // Reference to Upload model
 
 }, { timestamps: true });
 
