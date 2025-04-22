@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { uploadFile, getUploadsByUserId } = require('../controllers/upload.controller');
+const { uploadFile, getUploadsByUserId, getAllUploads } = require('../controllers/upload.controller');
 const { authUser } = require('../middlewares/auth.middlewares'); // Import the auth middleware
 const Upload = require('../models/Upload');
 
@@ -35,5 +35,8 @@ router.get('/upload', async (req, res) => {
 });
 
 router.get('/uploads/:userId', authUser, getUploadsByUserId); 
+
+// Add a route to fetch all uploads
+router.get('/uploads', getAllUploads);
 
 module.exports = router;

@@ -63,4 +63,19 @@ const getUploadsByUserId = async (req, res) => {
   }
 };
 
-module.exports = { uploadFile, getUploadsByUserId };
+const getAllUploads = async (req, res) => {
+  try {
+    // Fetch all uploads and populate user details
+    const uploads = await Upload.find().populate('user', 'name email');
+    if (!uploads || uploads.length === 0) {
+      return res.status(404).json({ message: 'No uploads found' });
+    }
+
+    res.status(200).json(uploads);
+  } catch (error) {
+    console.error('Error fetching all uploads:', error.message);
+    res.status(500).json({ message: 'Failed to fetch uploads', error: error.message });
+  }
+};
+
+module.exports = { uploadFile, getUploadsByUserId, getAllUploads };

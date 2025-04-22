@@ -102,3 +102,39 @@ module.exports.logoutUser = async (req, res, next) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
+
+module.exports.getCoin = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.user._id).select('coin');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ coin: user.coin });
+  } catch (error) {
+    console.error('Error fetching coin value:', error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports.updateCoin = async (req, res) => {
+  try {
+    const { userId, coin } = req.body;
+
+    if (!userId || typeof coin !== 'number') {
+      return res.status(400).json({ message: 'Invalid userId or coin value' });
+    }
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.coin += coin; // Increment the coin value
+    await user.save();
+
+    res.status(200).json({ message: 'Coin value updated successfully', coin: user.coin });
+  } catch (error) {
+    console.error('Error updating coin value:', error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
