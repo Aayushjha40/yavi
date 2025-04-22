@@ -8,7 +8,7 @@ module.exports.registerUser = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ error: errors.array() });
   }
-
+ 
   const { name, email, password } = req.body;
 
   if (!name) {
