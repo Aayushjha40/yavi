@@ -1,45 +1,81 @@
 const multer = require('multer');
 const cloudinary = require('../config/cloudinary.config');
-const path = require('path');
-const fs = require('fs');
-
-// Ensure uploads directory exists
-const uploadDir = 'uploads/';
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-
-// Multer Storage - Saves files temporarily before uploading to Cloudinary
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ storage });
+const Upload = require('../models/Upload'); // Import the Upload model
 
 const uploadFile = async (req, res) => {
   try {
-    if (!req.file) {
+    const file = req.file;
+
+    if (!file) {
+      console.error('No file uploaded'); // Debugging log
       return res.status(400).json({ message: 'No file uploaded' });
     }
-    // Upload to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'eco_friendly_zone'
-    });
 
-    // Delete temp file after upload
-    fs.unlinkSync(req.file.path);
+    // Check file type (image or video)
+    const fileType = file.mimetype.startsWith('image') ? 'image' : 'video';
 
-    res.status(200).json({ message: 'File uploaded successfully', url: result.secure_url });
+    // Upload file to Cloudinary
+    cloudinary.uploader.upload_stream(
+      {
+        folder: 'eco_friendly_zone',
+        resource_type: fileType,
+      },
+      async (error, result) => {
+        if (error) {
+          console.error('Cloudinary Error:', error); // Debugging log
+          return res.status(500).json({ message: 'Cloudinary upload failed', error });
+        }
 
+        // Save file details to MongoDB
+        const newUpload = new Upload({
+          fileName: file.originalname,
+          fileUrl: result.secure_url, // Store the Cloudinary URL
+          category: req.body.category || 'Uncategorized', // Optional category
+          user: req.user._id, // Associate the upload with the authenticated user
+        });
+
+        await newUpload.save();
+
+        res.status(201).json({ message: 'File uploaded successfully', upload: newUpload });
+      }
+    ).end(file.buffer);
   } catch (error) {
-    console.error('Upload Error:', error);
+    console.error('Error in uploadFile function:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-module.exports = { upload, uploadFile };
+
+const getUploadsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Find all uploads associated with the userId
+    const uploads = await Upload.find({ user: userId }).populate('user', 'name email'); // Populate user details
+    if (!uploads || uploads.length === 0) {
+      return res.status(404).json({ message: 'No uploads found for this user' });
+    }
+
+    res.status(200).json(uploads);
+  } catch (error) {
+    console.error('Error fetching uploads:', error.message);
+    res.status(500).json({ message: 'Failed to fetch uploads', error: error.message });
+  }
+};
+
+const getAllUploads = async (req, res) => {
+  try {
+    // Fetch all uploads and populate user details
+    const uploads = await Upload.find().populate('user', 'name email');
+    if (!uploads || uploads.length === 0) {
+      return res.status(404).json({ message: 'No uploads found' });
+    }
+
+    res.status(200).json(uploads);
+  } catch (error) {
+    console.error('Error fetching all uploads:', error.message);
+    res.status(500).json({ message: 'Failed to fetch uploads', error: error.message });
+  }
+};
+
+module.exports = { uploadFile, getUploadsByUserId, getAllUploads };

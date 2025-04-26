@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserDataContext } from '../context/UserContext';
-import { getDatabase, ref, onValue } from 'firebase/database';
 import logo from '../assets/logo.png';
 import login from '../assets/login.png';
 import coin from '../assets/coin.png';
@@ -16,7 +15,6 @@ const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [userName, setUserName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,19 +27,6 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  useEffect(() => {
-    if (user) {
-      const db = getDatabase();
-      const userRef = ref(db, `users/${user.uid}/name`);
-      onValue(userRef, (snapshot) => {
-        const name = snapshot.val();
-        setUserName(name || 'User');
-      });
-    } else {
-      setUserName(''); // Clear userName if no user is logged in
-    }
-  }, [user]);
 
   const closeDropdown = () => {
     setDropdownOpen(false);
@@ -151,7 +136,7 @@ const Header = () => {
                   <button className="absolute top-4 right-4 text-gray-600" onClick={toggleSidebar}>
                     Close
                   </button>
-                  <h2 className="text-xl font-bold mb-6">Welcome, {userName}!</h2>
+                  <h2 className="text-xl font-bold mb-6">Welcome, {user.name}!</h2>
                   <nav className="space-y-4">
                     <Link
                       to="/userd/myprofile"

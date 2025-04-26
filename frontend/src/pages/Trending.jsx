@@ -1,8 +1,9 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark, faBookmark as faBookmarkSolid } from '@fortawesome/free-solid-svg-icons';
 import place1 from '../assets/place1.jpg';
 import place2 from '../assets/place2.jpg';
 import place3 from '../assets/place3.jpg';
@@ -10,7 +11,21 @@ import place4 from '../assets/place4.jpg';
 import place5 from '../assets/place5.jpg';
 
 function Trending() {
-  const navigate = useNavigate();
+  const [wishlist, setWishlist] = useState(() => {
+    const savedWishlist = localStorage.getItem('wishlist');
+    return savedWishlist ? JSON.parse(savedWishlist) : [];
+  });
+
+  const handleBookmarkClick = (card) => {
+    const isAlreadyInWishlist = wishlist.some((item) => item.id === card.id);
+
+    const updatedWishlist = isAlreadyInWishlist
+      ? wishlist.filter((item) => item.id !== card.id) // Remove if already in wishlist
+      : [...wishlist, card]; // Add card to wishlist if not already present
+
+    setWishlist(updatedWishlist);
+    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist)); // Save to localStorage
+  };
 
   const settings = {
     speed: 300,
@@ -19,7 +34,7 @@ function Trending() {
     slidesToScroll: 1,
     arrows: true,
     centerMode: true,
-    centerPadding: '8%',
+    centerPadding: '4%',
   };
 
   const cards = [
@@ -30,17 +45,13 @@ function Trending() {
     { id: 5, title: 'Taj Mahal', image: place5, days: '6 Days', cities: '4 Cities', friends: '3 Friends' },
   ];
 
-  const handleCardClick = (id) => {
-    navigate(`/card/${id}`);
-  };
-
   return (
     <div>
       <h1 className='text-6xl font-medium font-serif text-center mt-5 mb-6'>Trending now</h1>
       <Slider {...settings}>
-        {cards.map(card => (
-          <div key={card.id} className="p-4" >
-            <div className="w-[280px] h-[280px] bg-white m-3 rounded-2xl shadow-lg flex flex-col hover:bg-gray-200 transition-colors duration-300 cursor-pointer" onClick={() => handleCardClick(card.id)}>
+        {cards.map((card) => (
+          <div key={card.id} className="p-4">
+            <div className="w-[280px] h-[280px] bg-white m-3 rounded-2xl shadow-lg flex flex-col hover:bg-gray-200 transition-colors duration-300 relative">
               <div className="flex-1">
                 <img src={card.image} alt={card.title} className="w-[270px] h-[180px] m-1 object-cover rounded-2xl" />
               </div>
@@ -49,9 +60,16 @@ function Trending() {
                 <p className="text-sm">By Travel with Nizar</p>
               </div>
               <hr className="w-[260px] border-gray-300 mt-1" />
-              <div className="flex-1 flex flex-col justify-center items-start m-2 ">
+              <div className="flex-1 flex flex-col justify-center items-start m-2">
                 <p className="text-sm">{card.days} &bull; {card.cities} &bull; {card.friends}</p>
               </div>
+              <FontAwesomeIcon
+                icon={wishlist.some((item) => item.id === card.id) ? faBookmarkSolid : faBookmark}
+                className={`absolute top-2 right-2 cursor-pointer text-xl ${
+                  wishlist.some((item) => item.id === card.id) ? 'text-blue-500' : 'text-gray-400 hover:text-gray-600'
+                }`}
+                onClick={() => handleBookmarkClick(card)}
+              />
             </div>
           </div>
         ))}

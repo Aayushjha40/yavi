@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserDataContext } from "../../context/UserContext";
 import axios from 'axios';
 import { auth, provider } from './Config';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, FacebookAuthProvider } from 'firebase/auth';
 import { Home } from 'lucide-react';
 
 const LoginForUser = () => {
@@ -17,11 +17,11 @@ const LoginForUser = () => {
     const emailFromLocalStorage = localStorage.getItem('email');
     if (emailFromLocalStorage) {
       setValue(emailFromLocalStorage);
-      setUser({ email: emailFromLocalStorage }); // Set user if already logged in with Google
+      setUser({ email: emailFromLocalStorage });
     }
   }, [setUser]);
 
-  const handleClick = async () => {
+  const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const userEmail = result.user.email;
@@ -37,6 +37,23 @@ const LoginForUser = () => {
       } else {
         console.error('Google sign-in error:', error.message);
       }
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    const facebookProvider = new FacebookAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, facebookProvider);
+      const userEmail = result.user.email;
+
+      setValue(userEmail);
+      setUser({ email: userEmail });
+      localStorage.setItem('email', userEmail);
+
+      navigate('/');
+    } catch (error) {
+      console.error('Facebook login error:', error.message);
+      alert(error.message);
     }
   };
 
@@ -57,6 +74,8 @@ const LoginForUser = () => {
         const data = response.data;
         setUser(data.user);
         localStorage.setItem('token', data.token);
+
+        // Redirect to home page after successful login
         navigate('/');
       }
     } catch (error) {
@@ -127,25 +146,23 @@ const LoginForUser = () => {
             </div>
 
             <div className="flex justify-center mt-4 gap-4">
-              {
-                <button
-                  type="button"
-                  className="flex items-center gap-2 border border-red-500 text-red-600 px-4 py-2 rounded-lg hover:bg-red-50 transition"
-                  onClick={handleClick}
-                >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
-                    alt="Google"
-                    className="w-5 h-5"
-                  />
-                  Google
-                </button>
-              }
+              <button
+                type="button"
+                className="flex items-center gap-2 border border-red-500 text-red-600 px-4 py-2 rounded-lg hover:bg-red-50 transition"
+                onClick={handleGoogleLogin}
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+                  alt="Google"
+                  className="w-5 h-5"
+                />
+                Google
+              </button>
 
               <button
                 type="button"
                 className="flex items-center gap-2 border border-blue-500 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition"
-                onClick={() => console.log('Login with Facebook')}
+                onClick={handleFacebookLogin}
               >
                 <img
                   src="https://upload.wikimedia.org/wikipedia/commons/4/44/Facebook_Logo.png"

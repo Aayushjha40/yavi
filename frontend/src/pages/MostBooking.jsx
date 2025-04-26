@@ -19,7 +19,7 @@ function MostBooking() {
     slidesToScroll: 1,
     arrows: true,
     centerMode: true,
-    centerPadding: '8%',
+    centerPadding: '4%',
   };
 
   const cards = [

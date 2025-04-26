@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const UserModel = require('../models/user.model');
 const blackListTokenModel = require('../models/blacklistToken.model');
 
@@ -42,44 +43,98 @@ module.exports.loginUser = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ error: errors.array() });
   }
+
   try {
     const { email, password } = req.body;
     const user = await UserModel.findOne({ email }).select('+password');
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password ' });
+      return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
-    const isMatch = await user.comparePassword(password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password ' });
+      return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
-    const token = user.generateAuthToken();
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
 
-    res.status(200).json({ token, user });
+    res.status(200).json({ message: 'Login successful.', token, user });
   } catch (err) {
-    next(err);
+    console.error('Error during login:', err.message);
+    res.status(500).json({ message: 'Server error.', error: err.message });
   }
 };
+
 
 module.exports.getUserProfile = async (req, res, next) => {
   res.status(200).json(req.user);
 }
 
 module.exports.logoutUser = async (req, res, next) => {
-  const token = req.cookies.token || req.headers.authorization.split(' ')[1];
+  const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
   try {
-    await blackListTokenModel.create({ token });
-    res.clearCookie('token');
-    res.status(200).json({ message: 'Logged out' });
-  } catch (err) {
-    if (err.code === 11000) {
-      return res.status(400).json({ message: 'Token already blacklisted' });
+    if (token) {
+      console.log('Checking if token is blacklisted...');
+      const isBlacklisted = await blackListTokenModel.findOne({ token });
+      if (!isBlacklisted) {
+        console.log('Token is not blacklisted. Adding to blacklist...');
+        await blackListTokenModel.create({ token });
+        console.log('Token blacklisted successfully');
+      } else {
+        console.log('Token is already blacklisted');
+      }
+    } else {
+      console.log('No token provided');
     }
-    return next(err);
+
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (err) {
+    console.error('Error during logout:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
-}
+};
+
+module.exports.getCoin = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.user._id).select('coin');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ coin: user.coin });
+  } catch (error) {
+    console.error('Error fetching coin value:', error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports.updateCoin = async (req, res) => {
+  try {
+    const { userId, coin } = req.body;
+
+    if (!userId || typeof coin !== 'number') {
+      return res.status(400).json({ message: 'Invalid userId or coin value' });
+    }
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.coin += coin; // Increment the coin value
+    await user.save();
+
+    res.status(200).json({ message: 'Coin value updated successfully', coin: user.coin });
+  } catch (error) {
+    console.error('Error updating coin value:', error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
